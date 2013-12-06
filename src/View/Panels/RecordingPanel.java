@@ -5,7 +5,6 @@ import View.Buttons.TextButton;
 import View.MIDIPlayerView;
 
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 
 /**
@@ -30,14 +29,14 @@ public class RecordingPanel extends JPanel {
      * with to record music, and buttons for recording and saving.
      */
     private void setUpRecordingPanel() {
-        setLayout(new GridLayout(3, 1));
+        setLayout(new FlowLayout());
         setSize(new Dimension(MIDIPlayerView.FRAME_WIDTH, MIDIPlayerView.FRAME_HEIGHT));
         setUpUserInput();
         setUpButtons();
     }
 
     /**
-     * Sets up the <<<<<INSERTMODEOFINPUTHERE>>>>>
+     * Sets up the keyboard input. OH GOD, THIS WILL NEVER WORK.
      */
     private void setUpUserInput() {
         JPanel keyboardPanel = new JPanel();
@@ -45,24 +44,22 @@ public class RecordingPanel extends JPanel {
         keyboardPanel.setSize(new Dimension(210, 110));
 
         JPanel onScreenKeyboard = new JPanel();
-        onScreenKeyboard.setSize(new Dimension(210, 110));
-        onScreenKeyboard.setLayout(new FlowLayout());
-
+        onScreenKeyboard.setSize(new Dimension(210, 108));
+        GridLayout layout = new GridLayout(1, 7);
+        layout.setHgap(0);
+        layout.setVgap(0);
+        onScreenKeyboard.setLayout(layout);
+       /*
         for(int i=0; i<7; i++) {
-        JPanel whitekey = new JPanel();
-        whitekey.setSize(new Dimension(30, 110));
-        whitekey.setBorder(new BorderUIResource.LineBorderUIResource(Color.black, 1));
-        whitekey.setOpaque(true);
-        whitekey.setVisible(true);
-        onScreenKeyboard.add(whitekey);
-        }
-
-
+            String keyname = Character.toString((char) ('A' + i));
+            PianoKey whitekey = new PianoKey(keyname, PianoKey.color.WHITE);
+            onScreenKeyboard.add(whitekey);
+        }   */
 
         onScreenKeyboard.setVisible(true);
-        keyboardPanel.add(onScreenKeyboard);
-        keyboardPanel.setVisible(true);
-        add(keyboardPanel);
+        //keyboardPanel.add(onScreenKeyboard);
+        //keyboardPanel.setVisible(true);
+        add(onScreenKeyboard);
     }
 
     /**

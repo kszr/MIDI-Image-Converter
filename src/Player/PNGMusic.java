@@ -22,14 +22,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class PNGMusic {
-    private final int SCALE_SIZE = 100;
+    private final int SCALED_SIZE = 100;
     private final int DISPLAY_SIZE = 250;
 
     private BufferedImage _imageData;
     private Sequence _sequence;
-    Track[] tracks;
+    private Track[] tracks;
 
     /**
      * Instantiates the Player.PNGMusic object by creating three tracks,
@@ -40,6 +41,14 @@ public class PNGMusic {
      * @throws Exception
      */
     public PNGMusic() throws Exception {
+        initializeSequence();
+    }
+
+    /**
+     * Sets up tracks, etc. in the sequence that is being created.
+     * @throws Exception
+     */
+    private void initializeSequence() throws Exception {
         _sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
         tracks = new Track[3];
 
@@ -75,12 +84,18 @@ public class PNGMusic {
         if(!file.exists())
             throw new FileNotFoundException("File does not exist");
 
+        initializeSequence();
         Image image = ImageIO.read(file);
-        image = image.getScaledInstance(SCALE_SIZE, SCALE_SIZE, Image.SCALE_SMOOTH);
-        _imageData = UIUtil.createImage(SCALE_SIZE, SCALE_SIZE, BufferedImage.TYPE_3BYTE_BGR);
+        image = image.getScaledInstance(SCALED_SIZE, SCALED_SIZE, Image.SCALE_SMOOTH);
+        _imageData = UIUtil.createImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         _imageData.getGraphics().drawImage(image, 0, 0 , null);
     }
 
+    /**
+     * The file needs to have a ".png" extension.
+     * @param filename
+     * @return
+     */
     private boolean checkValidFilename(String filename) {
         return filename.length()>4 && filename.substring(filename.length()-3).equalsIgnoreCase("png");
     }
@@ -125,7 +140,7 @@ public class PNGMusic {
      * @return
      * @throws Exception
      */
-    public BufferedImage midiToImage(Sequence sequence) throws Exception {
+    public BufferedImage midiToImage(Sequence sequence) {
         int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution() * 4);
 
         BufferedImage newImage = UIUtil.createImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
@@ -174,7 +189,7 @@ public class PNGMusic {
      * @param filename
      * @throws Exception
      */
-    public void save(String filename) throws Exception {
+    public void save(String filename) throws IOException {
         File file = new File(filename);
         MidiSystem.write(_sequence, 1, file);
     }
