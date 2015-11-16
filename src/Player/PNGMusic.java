@@ -87,7 +87,7 @@ public class PNGMusic {
         initializeSequence();
         Image image = ImageIO.read(file);
         image = image.getScaledInstance(SCALED_SIZE, SCALED_SIZE, Image.SCALE_SMOOTH);
-        _imageData = UIUtil.createImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
+        _imageData = new BufferedImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         _imageData.getGraphics().drawImage(image, 0, 0 , null);
     }
 
@@ -143,7 +143,7 @@ public class PNGMusic {
     public BufferedImage midiToImage(Sequence sequence) {
         int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution() * 4);
 
-        BufferedImage newImage = UIUtil.createImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
         System.out.println(side);
 
         int eventIndex = 0;
@@ -179,7 +179,7 @@ public class PNGMusic {
 
         Image image = newImage;
         image = image.getScaledInstance(DISPLAY_SIZE, DISPLAY_SIZE, Image.SCALE_SMOOTH);
-        newImage = UIUtil.createImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
+        newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         newImage.getGraphics().drawImage(image, 0, 0 , null);
         return newImage;
     }
