@@ -15,7 +15,6 @@ import javax.sound.midi.Sequencer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class MIDIPlayer {
     private final Sequencer _sequencer = MidiSystem.getSequencer();

@@ -14,7 +14,8 @@ import org.junit.Test;
 import java.io.FileNotFoundException;
 
 public class PNGMusicTest {
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     public void testConstructor() throws Exception {
         PNGMusic instance = new PNGMusic();
     }
@@ -28,6 +29,6 @@ public class PNGMusicTest {
     @Test(expected=FileNotFoundException.class)
     public void testNonexistentFile() throws Exception {
         PNGMusic instance = new PNGMusic();
-        instance.loadImage("Images/alice_in_wonderland_frontispiece.png");
+        instance.loadImage("InputImages/alice_in_wonderland_frontispiece.png");
     }
 }

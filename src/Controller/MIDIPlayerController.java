@@ -5,7 +5,6 @@ import View.MIDIPlayerView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
 
 /**
  * Created with IntelliJ IDEA.

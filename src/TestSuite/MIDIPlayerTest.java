@@ -15,7 +15,8 @@ import javax.sound.midi.InvalidMidiDataException;
 import java.io.FileNotFoundException;
 
 public class MIDIPlayerTest {
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     public void testConstructor() throws Exception {
         MIDIPlayer player = new MIDIPlayer();
     }
@@ -47,8 +48,8 @@ public class MIDIPlayerTest {
     @Test
     public void testSaveFile() throws Exception {
         MIDIPlayer player = new MIDIPlayer();
-        player.open("MidiFiles/dm_mzzpa.mid");
-        player.save("MidiFiles/liszt_etude_4.mid");
+        player.open("InputMidiFiles/dm_mzzpa.mid");
+        player.save("OutputMidiFiles/liszt_etude_4.mid");
     }
 
 }

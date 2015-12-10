@@ -15,7 +15,9 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class RecordingPanel extends JPanel {
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Instantiates the RecordingPanel by setting up all the necessary
      * components.
      */

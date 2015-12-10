@@ -15,7 +15,8 @@ import java.awt.event.ActionListener;
  * To change this template use File | Settings | File Templates.
  */
 public class PlayerPanel extends JPanel {
-    private TextButton openButton;
+	private static final long serialVersionUID = 1L;
+	private TextButton openButton;
     private TextButton saveButton;
     private TextButton pngMusicButton;
     private JButton backButton;

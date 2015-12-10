@@ -15,6 +15,7 @@ public class Application {
     public static void main(String[] args) throws Exception {
         MIDIPlayer player = new MIDIPlayer();
         MIDIPlayerView view = new MIDIPlayerView();
-        MIDIPlayerController controller = new MIDIPlayerController(view, player);
+        @SuppressWarnings("unused")
+		MIDIPlayerController controller = new MIDIPlayerController(view, player);
     }
 }

@@ -11,7 +11,8 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ImagePanel extends JPanel {
-    private Image img;
+    private static final long serialVersionUID = 1L;
+	private Image img;
 
     public ImagePanel(Image img) {
         super();

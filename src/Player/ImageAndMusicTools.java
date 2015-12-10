@@ -15,7 +15,6 @@ public class ImageAndMusicTools {
      * @return
      */
     public static int[] getARGB(int color) {
-        long argb = color;
         int[] argb_exploded = new int[4];
 
         argb_exploded[0] = (color >> 24) & 0x000000FF;
