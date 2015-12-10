@@ -201,9 +201,9 @@ public class MIDIPlayerView {
     public void addPlayerForwardListener(ActionListener forwardAction) {
         playerPanel.addStopActionListener(forwardAction);
     }
-
-public static void main(String[] args) {
-    MIDIPlayerView view = new MIDIPlayerView();
-}
-
+    /*
+	public static void main(String[] args) {
+	    MIDIPlayerView view = new MIDIPlayerView();
+	}
+	*/
 }

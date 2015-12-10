@@ -14,7 +14,7 @@ package Player;
  * - MIDI note names and pitches: http://www.phys.unsw.edu.au/jw/notes.html
  */
 
-import com.intellij.util.ui.UIUtil;
+//import com.intellij.util.ui.UIUtil;
 
 import javax.imageio.ImageIO;
 import javax.sound.midi.*;

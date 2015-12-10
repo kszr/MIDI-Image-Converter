@@ -1,3 +1,5 @@
 # MIDI-Image-Converter
 
-This was my final project for the Fall 2013 offering of CS 242 at the University of Illinois at Urbana-Champaign. I've lately become possesed by the desire to expand this into something more... expansive, and I hope to do just that in the near future. I would make note at this point of what these expansions are to be, but I haven't decided on them yet...
+This was my final project for the Fall 2013 offering of CS 242 at the University of Illinois at Urbana-Champaign.
+
+Expansions of very kinds are underway.
