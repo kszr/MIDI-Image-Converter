@@ -12,7 +12,9 @@ import javax.swing.JButton;
  * To change this template use File | Settings | File Templates.
  */
 public class TextButton extends JButton {
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Creates a custom text button that displays the given text.
      * @param displaytext
      */

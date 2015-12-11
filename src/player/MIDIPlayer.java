@@ -18,6 +18,7 @@ import tools.PNGMusic;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class MIDIPlayer {
     private final Sequencer _sequencer = MidiSystem.getSequencer();
@@ -25,7 +26,7 @@ public class MIDIPlayer {
     private PNGMusic _pngmusic;
 
     /**
-     * Initializes the Player.MIDIPlayer by loading the system's default
+     * Initializes the MIDIPlayer by loading the system's default
      * sequencer and synthesizer. Assumes that these exist, because
      * they probably do.
      * @throws Exception
@@ -42,20 +43,25 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void open(String filename) throws Exception {
-        if(!checkValidFilename(filename)) {
+        if(PNGMusic.isValidPNGFilename(filename)) {
             _pngmusic.loadImage(filename);
             _currSequence = _pngmusic.imageToMidi();
-        }
-        else {
+        } else if (isValidMidiFilename(filename)){
             File song = new File(filename);
 
             if(!song.exists())
             throw new FileNotFoundException();
 
             _currSequence = MidiSystem.getSequence(song);
-        }
+        } 
+        else throw new IllegalArgumentException("not a valid .mid or .png file");
     }
 
+    /**
+     * Converts a MIDI sequence to an image.
+     * @return 			The image.
+     * @throws Exception
+     */
     public BufferedImage convertSequenceToPNG() throws Exception {
         BufferedImage image = _pngmusic.midiToImage(_currSequence);
         return image;
@@ -66,13 +72,15 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void save(String name) throws Exception {
-        if(!checkValidFilename(name))
+        if(!isValidMidiFilename(name))
             throw new IllegalArgumentException("Invalid filename");
 
         File file = new File(name);
 
-        if(file.exists())
-            throw new Exception();
+        int copy = 2;
+        while(file.exists()) {
+            file = new File(generateConflictFilename(name, copy++));
+        }
         
         try {
         	MidiSystem.write(_currSequence, 1, file);
@@ -81,6 +89,21 @@ public class MIDIPlayer {
         	dir.mkdir();
         	MidiSystem.write(_currSequence, 1, file);
         }
+    }
+    
+    /**
+     * Appends a version number to a filename, in case multiple files
+     * with the same root name exist. This is probably gratuitous, but it's better than
+     * throwing exceptions when there are conflicts.
+     * @param filename
+     * @param copy
+     * @return
+     */
+    private static String generateConflictFilename(String filename, int copy) {
+    	String extn = filename.substring(filename.length()-4);
+    	String restOfName = filename.substring(0, filename.length()-4);
+    	restOfName += " (" + copy + ")";
+    	return restOfName + extn;
     }
 
     /**
@@ -121,13 +144,33 @@ public class MIDIPlayer {
     }
 
     /**
-     * Returns whether the filename is valid, herein defined as a
-     * name with extension ".mid".
+     * Returns true if the filename belongs to a Midi file (i.e., with extension ".mid").
      * @param filename
      * @return
      */
-    private boolean checkValidFilename(String filename) {
-        return filename.length()>4 && filename.substring(filename.length()-3).equalsIgnoreCase("mid");
+    private static boolean isValidMidiFilename(String filename) {
+        return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".mid");
     }
 
+    public static void main(String[] args) throws Exception {
+    	MIDIPlayer player = new MIDIPlayer();
+    	player.open("InputMidiFiles/ricercar-a-6-harp.mid");
+    	player.play();
+    	Scanner scanner = new Scanner(System.in);
+    	String command;
+    	while(true) {
+	        command = scanner.next();
+	        if(command.equals("pause"))
+	            player.pause();
+	        else if(command.equals("resume"))
+	            player.resume();
+	        else if(command.equals("stop"))
+	            player.stop();
+	        else if(command.equals("start"))
+	            player.play();
+	        else if(command.equals("quit"))
+	        	break;
+    	}
+    	scanner.close();
+    }
 }

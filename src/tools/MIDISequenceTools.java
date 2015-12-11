@@ -9,6 +9,7 @@ import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Track;
 
 /**
+ * This class handles various operations on Midi sequences.
  * Created with IntelliJ IDEA.
  * User: chattrj3
  * Date: 11/15/13

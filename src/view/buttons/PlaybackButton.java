@@ -13,7 +13,9 @@ import javax.swing.JButton;
  * To change this template use File | Settings | File Templates.
  */
 public class PlaybackButton extends JButton {
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Creates a custom playback button, and sets the image icon
      * whose path is passed to it as the icon.
      * @param imagefilename

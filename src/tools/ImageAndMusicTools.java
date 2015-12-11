@@ -1,5 +1,8 @@
 package tools;
 
+import audiovisual.AudioVisual;
+import audiovisual.SimpleAudioVisual;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -8,6 +11,16 @@ package tools;
  * To change this template use File | Settings | File Templates.
  */
 public class ImageAndMusicTools {
+	private AudioVisual<?, ?> lightSoundMapper;
+	
+	public ImageAndMusicTools() {
+		lightSoundMapper = new SimpleAudioVisual();
+	}
+	
+	public ImageAndMusicTools(AudioVisual<?, ?> map) {
+		this.lightSoundMapper = map;
+	}
+	
     /**
      * Given an integer representation of color in the BufferedImage.TYPE_INT_ARGB
      * color model, returns an integer array with the values of alpha, R, G, and B.
@@ -39,8 +52,6 @@ public class ImageAndMusicTools {
 
     /**
      * Approximately the inverse of the function used in colorToPitch().
-     * A mathematical inverse is not possible owing to the fact that there can be no bijection
-     * between intensities and musical notes.
      * @return
      */
     public static int pitchToColor(int note) {

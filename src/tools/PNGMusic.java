@@ -17,7 +17,6 @@ package tools;
 //import com.intellij.util.ui.UIUtil;
 
 import javax.imageio.ImageIO;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
@@ -26,7 +25,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * A class that handles conversion between Images and Music.
@@ -81,7 +79,7 @@ public class PNGMusic {
         MIDISequenceTools.setTrackNames(tracks, tracknames);
         MIDISequenceTools.setOmniOn(tracks);
         MIDISequenceTools.setPoly(tracks);
-        MIDISequenceTools.setInstrument(tracks, instrumentBank.getProgram("piano 1"));
+        MIDISequenceTools.setInstrument(tracks, 0);
     }
 
     /**
@@ -90,7 +88,7 @@ public class PNGMusic {
      * @throws Exception
      */
     public void loadImage(String filename) throws Exception {
-        if(!checkValidFilename(filename))
+        if(!isValidPNGFilename(filename))
             throw new IllegalArgumentException();
 
         File file = new File(filename);
@@ -110,8 +108,8 @@ public class PNGMusic {
      * @param filename
      * @return
      */
-    private boolean checkValidFilename(String filename) {
-        return filename.length()>4 && filename.substring(filename.length()-3).equalsIgnoreCase("png");
+    public static boolean isValidPNGFilename(String filename) {
+        return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".png");
     }
 
     /**
