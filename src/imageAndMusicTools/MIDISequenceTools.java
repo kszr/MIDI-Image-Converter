@@ -20,9 +20,6 @@ public class MIDISequenceTools {
     public static final int TICKS_PER_BEAT=480;
     public static final float DIVISION_TYPE=Sequence.PPQ; //Pulses (ticks) per quarter note
 
-    //Instrument/Program Constants:
-    public static final int PIANO=0x00;
-
     //Short Message Constants:
     public static final int TRACK_NAME_MSG =0x03;
     public static final int OMNI_ON=0x7D;

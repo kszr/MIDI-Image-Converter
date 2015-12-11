@@ -6,6 +6,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 
 import imageAndMusicTools.MIDISequenceTools;
+import imageAndMusicTools.InstrumentBank;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,11 +35,11 @@ public class MIDIRecorder {
 
         String[] tracknames = new String[NUM_TRACKS];
         tracknames[0] = "Piano RH";
-
+        
         MIDISequenceTools.setTrackNames(tracks, tracknames);
         MIDISequenceTools.setOmniOn(tracks);
         MIDISequenceTools.setPoly(tracks);
-        MIDISequenceTools.setInstrument(tracks, MIDISequenceTools.PIANO);
+        MIDISequenceTools.setInstrument(tracks, new InstrumentBank().getProgram("piano"));
     }
 
     /**
