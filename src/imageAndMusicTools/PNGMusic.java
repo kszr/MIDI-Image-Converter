@@ -35,6 +35,8 @@ public class PNGMusic {
     private BufferedImage _imageData;
     private Sequence _sequence;
     private Track[] tracks;
+    
+    private InstrumentBank instrumentBank = new InstrumentBank();
 
     /**
      * Instantiates the Player.PNGMusic object by creating three tracks,
@@ -71,7 +73,7 @@ public class PNGMusic {
         MIDISequenceTools.setTrackNames(tracks, tracknames);
         MIDISequenceTools.setOmniOn(tracks);
         MIDISequenceTools.setPoly(tracks);
-        MIDISequenceTools.setInstrument(tracks, new InstrumentBank().getProgram("piano"));
+        MIDISequenceTools.setInstrument(tracks, instrumentBank.getProgram("piano 1"));
     }
 
     /**

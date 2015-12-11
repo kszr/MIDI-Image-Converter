@@ -1,13 +1,17 @@
 package imageAndMusicTools;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Soundbank;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * A class that lets you search for an instrument by name and retrieve its code 
@@ -18,7 +22,7 @@ import javax.sound.midi.Soundbank;
  *
  */
 public class InstrumentBank {
-    private Map<String, Integer> instrumentMap = new HashMap<String, Integer>();
+    private BiMap<String, Integer> instrumentMap = HashBiMap.create();
     private Soundbank soundbank;
 
     public InstrumentBank() throws MidiUnavailableException {
@@ -31,12 +35,21 @@ public class InstrumentBank {
     	loadInstrumentMap();
     }
     
+    /**
+     * For some reason the same program is allowed to have different instrument names.
+     * For now I am discarding duplicates.
+     */
     private void loadInstrumentMap() {
     	Instrument[] allInstruments = soundbank.getInstruments();
     	for(Instrument instrument : allInstruments) {
-    		String name = instrument.getName().toLowerCase();
+    		String name = instrument.getName().toLowerCase().trim();
     		int program = instrument.getPatch().getProgram();
-    		instrumentMap.put(name, program);
+    		try {
+    			instrumentMap.put(name, program);
+    		} catch (IllegalArgumentException e) {
+    			if(!e.toString().contains("value already present"))
+    				throw new IllegalArgumentException(e);
+    		}
     	}
     }
     
@@ -47,11 +60,7 @@ public class InstrumentBank {
      * @return
      */
     public String getName(int program) {
-    	for(String name : instrumentMap.keySet()) {
-    		if(instrumentMap.get(name.toLowerCase()) == program)
-    			return name;
-    	}
-    	return null;
+    	return instrumentMap.inverse().get(program);
     }
     
     /**
@@ -59,5 +68,24 @@ public class InstrumentBank {
      */
     public Integer getProgram(String name) {
     	return instrumentMap.get(name);
+    }
+    
+    /**
+     * Returns a list of all the instrument names in the InstrumentBank.
+     * @return
+     */
+    public String[] getAllNames() {
+    	Set<Integer> valueSet = new TreeSet<Integer>(instrumentMap.values());
+    	List<String> allNames = new ArrayList<String>();
+    	for(int value : valueSet) {
+    		allNames.add(instrumentMap.inverse().get(value));
+    	}
+    	return allNames.toArray(new String[allNames.size()]);
+    }
+    
+    public static void main(String[] args) throws MidiUnavailableException {
+    	String[] list = new InstrumentBank().getAllNames();
+    	for(String name : list)
+    		System.out.println(name);
     }
 }
