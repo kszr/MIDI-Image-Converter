@@ -145,6 +145,7 @@ public class PNGMusic {
      * Uses the MIDI data in the loaded sequence to generate a square image.
      * @return
      * @throws Exception
+     * @TODO	Need to better deal with uncertainties in note lengths and track counts.
      */
     public BufferedImage midiToImage(Sequence sequence) {
         int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution() * 4);
@@ -152,6 +153,10 @@ public class PNGMusic {
         BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
         System.out.println(side);
 
+        for(int i=0; i<sequence.getTracks().length; i++)
+        	System.out.println(sequence.getTracks()[i].size());
+       
+        
         int eventIndex = 0;
         for(int row=0; row<side; row++) {
             for(int column=0; column<side; column++) {
@@ -159,9 +164,9 @@ public class PNGMusic {
                     eventIndex++;
                 }
 
-                int[] rgb = new int[3];
+                int[] rgb = {-1, -1, -1};
                 int[] notes = new int[3];
-
+               
                 try {
                     for(int index=0; index<3; index++) {
                         notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index], eventIndex);
@@ -173,6 +178,8 @@ public class PNGMusic {
                         notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index+1], eventIndex);
                         rgb[index] = ImageAndMusicTools.pitchToColor(notes[index]);
                     }
+                    
+                    //e.printStackTrace();
                 }
 
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
