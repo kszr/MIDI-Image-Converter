@@ -11,7 +11,7 @@ package tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import imageAndMusicTools.ImageAndMusicTools;
+import tools.ImageAndMusicTools;
 
 public class ImageAndMusicToolsTest {
     @Test

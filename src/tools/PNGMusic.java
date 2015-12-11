@@ -1,4 +1,4 @@
-package imageAndMusicTools;
+package tools;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +28,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * A class that handles conversion between Images and Music.
+ * This class will be expanded to be more sophisticated.
+ * (Originally written in 2013, despite the date.)
+ * @author abhishekchatterjee
+ * Date: Dec 11, 2015
+ * Time: 8:30:10 AM
+ */
 public class PNGMusic {
     private final int SCALED_SIZE = 100;
     private final int DISPLAY_SIZE = 250;
@@ -202,9 +210,10 @@ public class PNGMusic {
      * @param filename
      * @throws Exception
      */
+    /*
     public void save(String filename) throws IOException {
         File file = new File(filename);
         MidiSystem.write(_sequence, 1, file);
     }
-
+    */
 }

@@ -5,8 +5,8 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 
-import imageAndMusicTools.MIDISequenceTools;
-import imageAndMusicTools.InstrumentBank;
+import tools.InstrumentBank;
+import tools.MIDISequenceTools;
 
 /**
  * Created with IntelliJ IDEA.

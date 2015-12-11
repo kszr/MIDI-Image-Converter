@@ -66,6 +66,8 @@ public class MIDIPlayerController {
                     _view.setStatusFieldText("Opened " + filename);
                 }
                 catch(Exception exception) {
+                	String filename = _view.getTextFieldText();
+                	_view.setStatusFieldText("Failed to open " + filename);
                     _view.displayMessageBox(exception.toString());
                     //exception.printStackTrace();
                 }
@@ -87,6 +89,8 @@ public class MIDIPlayerController {
                     _view.setStatusFieldText("Saved " + filename);
                 }
                 catch(Exception exception) {
+                	String filename = _view.getTextFieldText();
+                	_view.setStatusFieldText("Failed to save " + filename);
                     _view.displayMessageBox(exception.toString());
                     //exception.printStackTrace();
                 }

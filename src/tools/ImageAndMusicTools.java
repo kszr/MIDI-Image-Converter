@@ -1,4 +1,4 @@
-package imageAndMusicTools;
+package tools;
 
 /**
  * Created with IntelliJ IDEA.

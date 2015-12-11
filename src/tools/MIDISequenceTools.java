@@ -1,4 +1,4 @@
-package imageAndMusicTools;
+package tools;
 
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
