@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import player.MIDIPlayer;
-import View.MIDIPlayerView;
+import view.MIDIPlayerView;
 
 /**
  * Created with IntelliJ IDEA.

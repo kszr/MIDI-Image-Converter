@@ -1,4 +1,4 @@
-package View;
+package view;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,7 +8,7 @@ package View;
  * To change this template use File | Settings | File Templates.
  */
 
-import View.Panels.*;
+import view.panels.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

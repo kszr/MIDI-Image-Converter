@@ -10,7 +10,7 @@ package tests;
 
 import org.junit.Test;
 
-import player.PNGMusic;
+import imageAndMusicTools.PNGMusic;
 
 import java.io.FileNotFoundException;
 

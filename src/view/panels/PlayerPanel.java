@@ -1,13 +1,18 @@
-package View.Panels;
+package view.panels;
 
-import View.Buttons.*;
+import view.buttons.*;
 
-import javax.swing.*;
 
-import View.MIDIPlayerView;
+import view.MIDIPlayerView;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * Created with IntelliJ IDEA.

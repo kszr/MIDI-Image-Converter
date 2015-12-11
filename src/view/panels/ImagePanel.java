@@ -1,7 +1,10 @@
-package View.Panels;
+package view.panels;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.JPanel;
 
 /**
  * Created with IntelliJ IDEA.

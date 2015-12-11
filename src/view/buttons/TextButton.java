@@ -1,7 +1,8 @@
-package View.Buttons;
+package view.buttons;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+
+import javax.swing.JButton;
 
 /**
  * Created with IntelliJ IDEA.

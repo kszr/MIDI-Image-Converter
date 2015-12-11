@@ -1,7 +1,7 @@
 package application;
 
 import player.MIDIPlayer;
-import View.MIDIPlayerView;
+import view.MIDIPlayerView;
 import controller.MIDIPlayerController;
 
 /**

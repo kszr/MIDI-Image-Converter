@@ -1,4 +1,4 @@
-package player;
+package imageAndMusicTools;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,4 +1,4 @@
-package player;
+package imageAndMusicTools;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +17,12 @@ package player;
 //import com.intellij.util.ui.UIUtil;
 
 import javax.imageio.ImageIO;
-import javax.sound.midi.*;
-import java.awt.*;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
+
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
