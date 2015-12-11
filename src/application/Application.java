@@ -1,8 +1,8 @@
-package Application;
+package application;
 
-import Player.MIDIPlayer;
+import player.MIDIPlayer;
 import View.MIDIPlayerView;
-import Controller.MIDIPlayerController;
+import controller.MIDIPlayerController;
 
 /**
  * Created with IntelliJ IDEA.

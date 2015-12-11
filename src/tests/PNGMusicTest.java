@@ -1,4 +1,4 @@
-package TestSuite;
+package tests;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,8 +8,9 @@ package TestSuite;
  * To change this template use File | Settings | File Templates.
  */
 
-import Player.PNGMusic;
 import org.junit.Test;
+
+import player.PNGMusic;
 
 import java.io.FileNotFoundException;
 

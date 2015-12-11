@@ -1,4 +1,4 @@
-package TestSuite;
+package tests;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,10 +8,12 @@ package TestSuite;
  * To change this template use File | Settings | File Templates.
  */
 
-import Player.MIDIPlayer;
 import org.junit.Test;
 
+import player.MIDIPlayer;
+
 import javax.sound.midi.InvalidMidiDataException;
+
 import java.io.FileNotFoundException;
 
 public class MIDIPlayerTest {

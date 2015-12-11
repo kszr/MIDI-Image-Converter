@@ -1,4 +1,4 @@
-package Player;
+package player;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,8 +70,14 @@ public class MIDIPlayer {
 
         if(file.exists())
             throw new Exception();
-
-        MidiSystem.write(_currSequence, 1, file);
+        
+        try {
+        	MidiSystem.write(_currSequence, 1, file);
+        } catch (FileNotFoundException e) {
+        	File dir = new File("OutputMidiFiles");
+        	dir.mkdir();
+        	MidiSystem.write(_currSequence, 1, file);
+        }
     }
 
     /**

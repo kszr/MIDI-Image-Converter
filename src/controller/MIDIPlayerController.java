@@ -1,10 +1,11 @@
-package Controller;
+package controller;
 
-import Player.MIDIPlayer;
-import View.MIDIPlayerView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
+import player.MIDIPlayer;
+import View.MIDIPlayerView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,7 +67,7 @@ public class MIDIPlayerController {
                 }
                 catch(Exception exception) {
                     _view.displayMessageBox(exception.toString());
-                    exception.printStackTrace();
+                    //exception.printStackTrace();
                 }
             }
         });
@@ -87,7 +88,7 @@ public class MIDIPlayerController {
                 }
                 catch(Exception exception) {
                     _view.displayMessageBox(exception.toString());
-                    exception.printStackTrace();
+                    //exception.printStackTrace();
                 }
             }
         });
@@ -107,7 +108,7 @@ public class MIDIPlayerController {
                     _view.setStatusFieldText("Converted to PNG");
                 }
                 catch(Exception exception) {
-                    exception.printStackTrace();
+                    //exception.printStackTrace();
                 }
             }
         });
@@ -130,7 +131,7 @@ public class MIDIPlayerController {
                     }
                     catch(Exception exception2) {
                         _view.displayMessageBox(exception2.toString());
-                        exception2.printStackTrace();
+                        //exception2.printStackTrace();
                     }
                 }
             }

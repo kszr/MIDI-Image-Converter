@@ -1,9 +1,11 @@
 package View.Panels;
 
 import View.Buttons.*;
-import View.MIDIPlayerView;
 
 import javax.swing.*;
+
+import View.MIDIPlayerView;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 

@@ -1,4 +1,4 @@
-package Player;
+package player;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,4 +1,4 @@
-package TestSuite;
+package tests;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,9 +8,10 @@ package TestSuite;
  * To change this template use File | Settings | File Templates.
  */
 
-import Player.ImageAndMusicTools;
 import org.junit.Assert;
 import org.junit.Test;
+
+import player.ImageAndMusicTools;
 
 public class ImageAndMusicToolsTest {
     @Test

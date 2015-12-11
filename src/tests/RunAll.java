@@ -1,4 +1,4 @@
-package TestSuite;
+package tests;
 
 /**
  * Created with IntelliJ IDEA.

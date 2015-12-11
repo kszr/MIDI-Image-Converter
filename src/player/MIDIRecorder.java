@@ -1,4 +1,4 @@
-package Player;
+package player;
 
 import javax.sound.midi.*;
 

@@ -2,9 +2,11 @@ package View.Panels;
 
 import View.Buttons.PlaybackButton;
 import View.Buttons.TextButton;
-import View.MIDIPlayerView;
 
 import javax.swing.*;
+
+import View.MIDIPlayerView;
+
 import java.awt.*;
 
 /**
