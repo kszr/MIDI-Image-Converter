@@ -13,13 +13,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.swing.*;
 
 public class MIDIPlayerView {
     private final JFrame applicationWindow = new JFrame("Midi Player");
     private final PlayerPanel playerPanel = new PlayerPanel();
     private final RecordingPanel recordingPanel = new RecordingPanel();
-
+    
     public static final int FRAME_WIDTH = 400;
     public static final int FRAME_HEIGHT = 250;
 
@@ -124,6 +126,28 @@ public class MIDIPlayerView {
         imgpanel.setVisible(true);
         imageframe.getContentPane().add(imgpanel);
         imageframe.setVisible(true);
+    }
+    
+    /**
+     * Opens the player panel's file chooser.
+     */
+    public void openFileChooser() {
+    	playerPanel.openFileChooser();
+    }
+    
+    /**
+     * Opens the player panel's file chooser.
+     */
+    public void openFileSaver() {
+    	playerPanel.openFileSaver();
+    }
+    
+    /**
+     * Returns the file selected in the player panel's file chooser.
+     * @return
+     */
+    public File getSelectedFile() {
+    	return playerPanel.getSelectedFile();
     }
 
     /**

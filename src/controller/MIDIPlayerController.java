@@ -3,6 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import player.MIDIPlayer;
 import view.MIDIPlayerView;
@@ -59,17 +60,18 @@ public class MIDIPlayerController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String filename = _view.getTextFieldText();
+                	_view.openFileChooser();
+                	String filename = _view.getSelectedFile().getName();
+                	_model.open(_view.getSelectedFile());
                     _view.setStatusFieldText("Opening " + filename + "...");
-                    _model.open(filename);
+                    //_model.open(filename);
                     _model.stop();
                     _view.setStatusFieldText("Opened " + filename);
                 }
                 catch(Exception exception) {
-                	String filename = _view.getTextFieldText();
+                	String filename = _view.getSelectedFile().getName();
                 	_view.setStatusFieldText("Failed to open " + filename);
                     _view.displayMessageBox(exception.toString());
-                    //exception.printStackTrace();
                 }
             }
         });
@@ -83,16 +85,21 @@ public class MIDIPlayerController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String filename = _view.getTextFieldText();
+                	File existingFile = _view.getSelectedFile();
+                	_view.openFileSaver();
+                	String filename = _view.getSelectedFile().getName();
+                	if(existingFile == null ||
+                			!existingFile.exists())
+                		throw new Exception("No file loaded!");
+                	else if(!existingFile.getName().substring(existingFile.getName().length()-4).equals(filename.substring(filename.length()-4)))
+                		throw new Exception("Invalid file type!");
                     _view.setStatusFieldText("Saving " + filename);
                     _model.save(filename);
                     _view.setStatusFieldText("Saved " + filename);
                 }
                 catch(Exception exception) {
-                	String filename = _view.getTextFieldText();
-                	_view.setStatusFieldText("Failed to save " + filename);
+                	_view.setStatusFieldText("Failed to save file");
                     _view.displayMessageBox(exception.toString());
-                    //exception.printStackTrace();
                 }
             }
         });
@@ -112,7 +119,7 @@ public class MIDIPlayerController {
                     _view.setStatusFieldText("Converted to PNG");
                 }
                 catch(Exception exception) {
-                    //exception.printStackTrace();
+                	//Doesn't do anything.
                 }
             }
         });
@@ -135,7 +142,6 @@ public class MIDIPlayerController {
                     }
                     catch(Exception exception2) {
                         _view.displayMessageBox(exception2.toString());
-                        //exception2.printStackTrace();
                     }
                 }
             }

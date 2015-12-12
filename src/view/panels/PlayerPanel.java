@@ -9,8 +9,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -33,6 +35,8 @@ public class PlayerPanel extends JPanel {
     private JButton stopButton;
     private JTextField filename_field;
     private JTextField status_field;
+    private final JFileChooser fileChooser = new JFileChooser();
+    
     /**
      * Instantiates the PlayerPanel by setting up all the necessary
      * components.
@@ -61,7 +65,7 @@ public class PlayerPanel extends JPanel {
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new FlowLayout());
         textFieldPanel.setSize(new Dimension(500, 70));
-        createTextField(textFieldPanel);
+        //createTextField(textFieldPanel);
         setUpTextFieldButtons(textFieldPanel);
         textFieldPanel.setVisible(true);
         add(textFieldPanel);
@@ -98,7 +102,6 @@ public class PlayerPanel extends JPanel {
         status_field.setText("No file is loaded");
         statusFieldPanel.add(status_field);
     }
-
 
     /**
      * Sets up buttons for the text field.
@@ -148,6 +151,28 @@ public class PlayerPanel extends JPanel {
 
         buttonsPanel.setVisible(true);
         add(buttonsPanel);
+    }
+    
+    /**
+     * Opens the file chooser.
+     */
+    public void openFileChooser() {
+    	fileChooser.showOpenDialog(this);
+    }
+    
+    /**
+     * Opens the file chooser in save mode or whatever.
+     */
+    public void openFileSaver() {
+    	fileChooser.showSaveDialog(this);
+    }
+    
+    /**
+     * Returns the file selected in the file chooser.
+     * @return
+     */
+    public File getSelectedFile() {
+    	return fileChooser.getSelectedFile();
     }
 
     /**

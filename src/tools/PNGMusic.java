@@ -88,11 +88,14 @@ public class PNGMusic {
      * @throws Exception
      */
     public void loadImage(String filename) throws Exception {
-        if(!isValidPNGFilename(filename))
+        if(!ImageAndMusicTools.isValidPNGFilename(filename))
             throw new IllegalArgumentException();
 
         File file = new File(filename);
-
+        loadImage(file);
+    }
+    
+    public void loadImage(File file) throws Exception {
         if(!file.exists())
             throw new FileNotFoundException("File does not exist");
 
@@ -101,15 +104,6 @@ public class PNGMusic {
         image = image.getScaledInstance(SCALED_SIZE, SCALED_SIZE, Image.SCALE_SMOOTH);
         _imageData = new BufferedImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         _imageData.getGraphics().drawImage(image, 0, 0 , null);
-    }
-
-    /**
-     * The file needs to have a ".png" extension.
-     * @param filename
-     * @return
-     */
-    public static boolean isValidPNGFilename(String filename) {
-        return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".png");
     }
 
     /**

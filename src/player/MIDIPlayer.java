@@ -13,6 +13,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
+import tools.ImageAndMusicTools;
 import tools.PNGMusic;
 
 import java.awt.image.BufferedImage;
@@ -43,18 +44,33 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void open(String filename) throws Exception {
-        if(PNGMusic.isValidPNGFilename(filename)) {
+        if(ImageAndMusicTools.isValidPNGFilename(filename)) {
             _pngmusic.loadImage(filename);
             _currSequence = _pngmusic.imageToMidi();
-        } else if (isValidMidiFilename(filename)){
+        } else if(ImageAndMusicTools.isValidMidiFilename(filename)){
             File song = new File(filename);
 
             if(!song.exists())
-            throw new FileNotFoundException();
+            	throw new FileNotFoundException();
 
             _currSequence = MidiSystem.getSequence(song);
         } 
         else throw new IllegalArgumentException("not a valid .mid or .png file");
+    }
+    
+    /**
+     * Opens a file directly.
+     * @param file
+     * @throws Exception
+     */
+    public void open(File file) throws Exception {
+    	if(ImageAndMusicTools.isValidPNGFile(file)) {
+    		_pngmusic.loadImage(file);
+    		_currSequence = _pngmusic.imageToMidi();
+    	} else if(ImageAndMusicTools.isValidMidiFile(file)) {
+            _currSequence = MidiSystem.getSequence(file);
+    	}
+    	else throw new IllegalArgumentException("not a valid .mid or .png file");
     }
 
     /**
@@ -72,8 +88,8 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void save(String name) throws Exception {
-        if(!isValidMidiFilename(name))
-            throw new IllegalArgumentException("Invalid filename");
+        if(!ImageAndMusicTools.isValidMidiFilename(name))
+            throw new IllegalArgumentException("invalid filename");
 
         File file = new File(name);
 
@@ -81,14 +97,8 @@ public class MIDIPlayer {
         while(file.exists()) {
             file = new File(generateConflictFilename(name, copy++));
         }
-        
-        try {
-        	MidiSystem.write(_currSequence, 1, file);
-        } catch (FileNotFoundException e) {
-        	File dir = new File("OutputMidiFiles");
-        	dir.mkdir();
-        	MidiSystem.write(_currSequence, 1, file);
-        }
+
+        MidiSystem.write(_currSequence, 1, file);
     }
     
     /**
@@ -141,15 +151,6 @@ public class MIDIPlayer {
      */
     public void stop() throws Exception {
         _sequencer.close();
-    }
-
-    /**
-     * Returns true if the filename belongs to a Midi file (i.e., with extension ".mid").
-     * @param filename
-     * @return
-     */
-    private static boolean isValidMidiFilename(String filename) {
-        return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".mid");
     }
 
 //    public static void main(String[] args) throws Exception {
