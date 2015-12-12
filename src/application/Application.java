@@ -13,9 +13,8 @@ import controller.MIDIPlayerController;
  */
 public class Application {
     public static void main(String[] args) throws Exception {
-        MIDIPlayer player = new MIDIPlayer();
         MIDIPlayerView view = new MIDIPlayerView();
-        @SuppressWarnings("unused")
+        MIDIPlayer player = new MIDIPlayer();
 		MIDIPlayerController controller = new MIDIPlayerController(view, player);
     }
 }

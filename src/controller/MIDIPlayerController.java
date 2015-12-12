@@ -199,4 +199,11 @@ public class MIDIPlayerController {
             }
         });
     }
+  
+//    public static void main(String[] args) throws Exception {
+//    	MIDIPlayerView v = new MIDIPlayerView();
+//    	MIDIPlayer m = new MIDIPlayer();
+//    	MIDIPlayerController abc = new MIDIPlayerController(v, m);
+//    }
+    
 }

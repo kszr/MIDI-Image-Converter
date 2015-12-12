@@ -152,25 +152,25 @@ public class MIDIPlayer {
         return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".mid");
     }
 
-    public static void main(String[] args) throws Exception {
-    	MIDIPlayer player = new MIDIPlayer();
-    	player.open("InputMidiFiles/ricercar-a-6-harp.mid");
-    	player.play();
-    	Scanner scanner = new Scanner(System.in);
-    	String command;
-    	while(true) {
-	        command = scanner.next();
-	        if(command.equals("pause"))
-	            player.pause();
-	        else if(command.equals("resume"))
-	            player.resume();
-	        else if(command.equals("stop"))
-	            player.stop();
-	        else if(command.equals("start"))
-	            player.play();
-	        else if(command.equals("quit"))
-	        	break;
-    	}
-    	scanner.close();
-    }
+//    public static void main(String[] args) throws Exception {
+//    	MIDIPlayer player = new MIDIPlayer();
+//    	player.open("InputMidiFiles/ricercar-a-6-harp.mid");
+//    	player.play();
+//    	Scanner scanner = new Scanner(System.in);
+//    	String command;
+//    	while(true) {
+//	        command = scanner.next();
+//	        if(command.equals("pause"))
+//	            player.pause();
+//	        else if(command.equals("resume"))
+//	            player.resume();
+//	        else if(command.equals("stop"))
+//	            player.stop();
+//	        else if(command.equals("start"))
+//	            player.play();
+//	        else if(command.equals("quit"))
+//	        	break;
+//    	}
+//    	scanner.close();
+//    }
 }

@@ -15,13 +15,11 @@ public class SimpleAudioVisual implements AudioVisual<Integer, Integer> {
 
 	@Override
 	public Integer getColor(Integer note) {
-		// TODO Auto-generated method stub
 		return (note-21)*3;
 	}
  
 	@Override
 	public Integer getNote(Integer color) {
-		// TODO Auto-generated method stub
 		return 21 + color/3;
 	}
 

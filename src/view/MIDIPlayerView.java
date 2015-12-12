@@ -32,7 +32,7 @@ public class MIDIPlayerView {
         setUpMenuBar();
         setUpPlayerPanel();
         setUpRecordingPanel();
-
+        applicationWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         applicationWindow.setVisible(true);
     }
 
@@ -202,7 +202,7 @@ public class MIDIPlayerView {
         playerPanel.addStopActionListener(forwardAction);
     }
     
-	public static void main(String[] args) {
-	    MIDIPlayerView view = new MIDIPlayerView();
-	}
+//	public static void main(String[] args) {
+//	    MIDIPlayerView view = new MIDIPlayerView();
+//	}
 }
