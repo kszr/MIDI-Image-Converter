@@ -10,7 +10,7 @@ One of the (ambitious) claims this project makes is to load image (png) files an
 
 ##How well it does what it's supposed to do
 
-Reasonably well, in my opinion, but for a smaller input set than is desirable. In particular, converting midis to images has proven a bit more onerous than anyone would like, owing to the sheer uncertainty of what you can expect from a midi file (number of tracks, number of extraneous tracks, etc.). At present this functionality is limited to files with three tracks, each of which is composed solely of semiquavers/sixteenth notes. (I forgot to check whether it accepts rests...)
+Reasonably well, in my opinion, but for a smaller input set than is desirable. In particular, converting midis to images has proven a bit more onerous than anyone would like, owing to the sheer uncertainty in what you can expect from a midi file (number of tracks, number of extraneous tracks, etc.). At present this functionality is limited to files with three tracks, each of which is composed solely of semiquavers/sixteenth notes. (I forgot to check whether it accepts rests...)
 
 On the other hand, converting images to midi seems to work just fine, if only because it's easy to specify in advance that you want a certain number of tracks in your midi file. The conversion itself is not particularly sophisticated at present, but it shouldn't be too difficult to solicit the help of people with more imagination than I have.
 

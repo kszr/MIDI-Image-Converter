@@ -31,9 +31,9 @@ public class MIDIPlayerView {
     public MIDIPlayerView() {
         applicationWindow.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         applicationWindow.setIconImage(Toolkit.getDefaultToolkit().getImage("ViewImages/music_icon.png"));
-        setUpMenuBar();
+        //setUpMenuBar();
         setUpPlayerPanel();
-        setUpRecordingPanel();
+        //setUpRecordingPanel();
         applicationWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         applicationWindow.setVisible(true);
     }
