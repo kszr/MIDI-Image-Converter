@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,6 +38,53 @@ public class PlayerPanel extends JPanel {
     private JTextField filename_field;
     private JTextField status_field;
     private final JFileChooser fileChooser = new JFileChooser();
+    
+    /**
+     * Filters out midi and png files for now.
+     * @author abhishekchatterjee
+     * Date: Dec 12, 2015
+     * Time: 11:05:50 AM
+     */
+    public static class MidiOrImageFilter extends FileFilter {
+
+		@Override
+		public boolean accept(File f) {
+			// TODO Auto-generated method stub
+			if (f.isDirectory()) {
+		        return true;
+		    }
+
+		    String extension = getExtension(f);
+		    if (extension != null) {
+		        if (extension.equals("mid") ||
+		            extension.equals("png")) {
+		                return true;
+		        } else {
+		            return false;
+		        }
+		    }
+		    
+		    return false;
+		}
+
+		@Override
+		public String getDescription() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	    private static String getExtension(File f) {
+	        String ext = null;
+	        String s = f.getName();
+	        int i = s.lastIndexOf('.');
+
+	        if (i > 0 &&  i < s.length() - 1) {
+	            ext = s.substring(i+1).toLowerCase();
+	        }
+	        return ext;
+	    }
+    	
+    }
     
     /**
      * Instantiates the PlayerPanel by setting up all the necessary
@@ -75,10 +124,10 @@ public class PlayerPanel extends JPanel {
      * ACtually creates the text field.
      * @param textFieldPanel
      */
-    private void createTextField(JPanel textFieldPanel) {
-        filename_field = new JTextField(10);
-        textFieldPanel.add(filename_field);
-    }
+//    private void createTextField(JPanel textFieldPanel) {
+//        filename_field = new JTextField(10);
+//        textFieldPanel.add(filename_field);
+//    }
 
     /**
      * Sets up the panel for the status field.
@@ -99,6 +148,7 @@ public class PlayerPanel extends JPanel {
     private void createStatusField(JPanel statusFieldPanel) {
         status_field = new JTextField(30);
         status_field.setEditable(false);
+        status_field.setBackground(UIManager.getColor("Panel.background"));
         status_field.setText("No file is loaded");
         statusFieldPanel.add(status_field);
     }
@@ -158,6 +208,8 @@ public class PlayerPanel extends JPanel {
      */
     public void openFileChooser() {
     	fileChooser.showOpenDialog(this);
+    	fileChooser.addChoosableFileFilter(new MidiOrImageFilter());
+    	fileChooser.setAcceptAllFileFilterUsed(false);
     }
     
     /**
@@ -165,6 +217,8 @@ public class PlayerPanel extends JPanel {
      */
     public void openFileSaver() {
     	fileChooser.showSaveDialog(this);
+    	fileChooser.addChoosableFileFilter(new MidiOrImageFilter());
+    	fileChooser.setAcceptAllFileFilterUsed(false);
     }
     
     /**
@@ -246,6 +300,4 @@ public class PlayerPanel extends JPanel {
     public void addForwardActionListener(ActionListener forwardAction) {
         forwardButton.addActionListener(forwardAction);
     }
-
-
 }

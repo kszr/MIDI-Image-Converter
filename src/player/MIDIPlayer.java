@@ -122,7 +122,7 @@ public class MIDIPlayer {
      */
     public void play() throws Exception {
         if(_currSequence == null)
-            throw new InvalidMidiDataException("=(");
+            throw new InvalidMidiDataException("no song is loaded =(");
 
         _sequencer.open();
         _sequencer.setSequence(_currSequence);
