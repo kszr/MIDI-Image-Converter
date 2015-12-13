@@ -4,6 +4,7 @@ import java.io.File;
 
 import audiovisual.AudioVisual;
 import audiovisual.SimpleAudioVisual;
+import music.Note;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,13 +14,13 @@ import audiovisual.SimpleAudioVisual;
  * To change this template use File | Settings | File Templates.
  */
 public class ImageAndMusicTools {
-	private AudioVisual<?, ?> lightSoundMapper;
+	private AudioVisual lightSoundMapper;
 	
 	public ImageAndMusicTools() {
 		lightSoundMapper = new SimpleAudioVisual();
 	}
 	
-	public ImageAndMusicTools(AudioVisual<?, ?> map) {
+	public ImageAndMusicTools(AudioVisual map) {
 		this.lightSoundMapper = map;
 	}
 	
@@ -41,15 +42,12 @@ public class ImageAndMusicTools {
     }
 
     /**
-     * Returns a simple color-to-pitch function, where 21 is the lowest note
-     * on a piano in the MIDI standard, and intensity is the 0-255 value
-     * corresponding to R, G, or B. With 85 different pitches as possible output,
-     * this function spans much of the 88-note range of the piano.
-     * @param intensity
+     * Returns a
+     * @param color
      * @return
      */
-    public static int colorToPitch(int intensity) {
-        return 21 + intensity/3;
+    public Note colorToNote(int color) {
+        return lightSoundMapper.getNote(color);
     }
 
     /**

@@ -38,11 +38,12 @@ public class PNGMusic {
     private final int SCALED_SIZE = 100;
     private final int DISPLAY_SIZE = 250;
 
-    private BufferedImage _imageData;
-    private Sequence _sequence;
+    private BufferedImage imageData;
+    private Sequence sequence;
     private Track[] tracks;
     
     private InstrumentBank instrumentBank = new InstrumentBank();
+    private ImageAndMusicTools imageAndMusicTools = new ImageAndMusicTools();
 
     /**
      * Instantiates the Player.PNGMusic object by creating three tracks,
@@ -61,11 +62,11 @@ public class PNGMusic {
      * @throws Exception
      */
     private void initializeSequence() throws Exception {
-        _sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
+        sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
         tracks = new Track[3];
 
         for(int index=0; index<tracks.length; index++) {
-            tracks[index] = _sequence.createTrack();
+            tracks[index] = sequence.createTrack();
         }
 
         MIDISequenceTools.setUpSystem(tracks);
@@ -94,8 +95,8 @@ public class PNGMusic {
         initializeSequence();
         Image image = ImageIO.read(file);
         image = image.getScaledInstance(SCALED_SIZE, SCALED_SIZE, Image.SCALE_SMOOTH);
-        _imageData = new BufferedImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
-        _imageData.getGraphics().drawImage(image, 0, 0 , null);
+        imageData = new BufferedImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
+        imageData.getGraphics().drawImage(image, 0, 0 , null);
     }
 
     /**
@@ -103,23 +104,23 @@ public class PNGMusic {
      * @throws Exception
      */
     public Sequence imageToMidi() throws Exception {
-        int width = _imageData.getWidth();
-        int height = _imageData.getHeight();
+        int width = imageData.getWidth();
+        int height = imageData.getHeight();
 
         long ticks=1;
 
         for(int row=0; row<height; row++) {
             for(int column=0; column<width; column++) {
-                int color = _imageData.getRGB(column, row);
+                int color = imageData.getRGB(column, row);
 
                 int[] argb = ImageAndMusicTools.getARGB(color);
 
                 for(int index=0; index<tracks.length; index++) {
-                    MIDISequenceTools.setNoteOn(tracks[index], ImageAndMusicTools.colorToPitch(argb[index + 1]), 0x60, ticks);
+                    MIDISequenceTools.setNoteOn(tracks[index], imageAndMusicTools.colorToNote(argb[index + 1]), 0x60, ticks);
                 }
 
                 for(int index=0; index<tracks.length; index++) {
-                    MIDISequenceTools.setNoteOff(tracks[index], ImageAndMusicTools.colorToPitch(argb[index + 1]), 0x40, ticks + 120);
+                    MIDISequenceTools.setNoteOff(tracks[index], imageAndMusicTools.colorToNote(argb[index + 1]), 0x40, ticks + 120);
                 }
 
                 ticks += 121;
@@ -130,7 +131,7 @@ public class PNGMusic {
             MIDISequenceTools.setEndOfTrack(track, ticks + 19);
         }
 
-        return _sequence;
+        return sequence;
     }
 
     /**

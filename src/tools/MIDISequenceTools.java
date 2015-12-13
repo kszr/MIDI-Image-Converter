@@ -8,6 +8,8 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Track;
 
+import music.Note;
+
 /**
  * This class handles various operations on Midi sequences.
  * Created with IntelliJ IDEA.
@@ -139,14 +141,14 @@ public class MIDISequenceTools {
      * Sets a note on message on a given track which tells the sequencer to start
      * playing a given note on a given tick and with a given velocity.
      * @param track
-     * @param keynumber
+     * @param note
      * @param notevel
      * @param tick
      * @throws Exception
      */
-    public static void setNoteOn(Track track, int keynumber, int notevel, long tick) throws Exception {
+    public static void setNoteOn(Track track, Note note, int notevel, long tick) throws Exception {
         ShortMessage msg = new ShortMessage();
-        msg.setMessage(ShortMessage.NOTE_ON, keynumber, notevel);
+        msg.setMessage(ShortMessage.NOTE_ON, note.getPitch(), notevel);
         MidiEvent event = new MidiEvent(msg, tick);
         track.add(event);
     }
@@ -156,14 +158,14 @@ public class MIDISequenceTools {
      * playing a note that is being played on this track on a certain tick and with
      * a given velocity.
      * @param track
-     * @param keynumber
+     * @param note
      * @param notevel
      * @param tick
      * @throws Exception
      */
-    public static void setNoteOff(Track track, int keynumber, int notevel, long tick) throws Exception {
+    public static void setNoteOff(Track track, Note note, int notevel, long tick) throws Exception {
         ShortMessage msg = new ShortMessage();
-        msg.setMessage(ShortMessage.NOTE_OFF, keynumber, notevel);
+        msg.setMessage(ShortMessage.NOTE_OFF, note.getPitch(), notevel);
         MidiEvent event = new MidiEvent(msg, tick);
         track.add(event);
     }

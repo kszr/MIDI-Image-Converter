@@ -18,17 +18,17 @@ import tools.MIDISequenceTools;
 public class MIDIRecorder {
     private final int NUM_TRACKS = 1;
 
-    private final Sequencer _sequencer = MidiSystem.getSequencer();
-    private Sequence _sequence;
+    private final Sequencer sequencer = MidiSystem.getSequencer();
+    private Sequence sequence;
     private Track[] tracks;
     private boolean isRecording = false;
 
     public MIDIRecorder() throws Exception {
-        _sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
+        sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
         tracks = new Track[NUM_TRACKS];
-        tracks[0] = _sequence.createTrack();
-        _sequencer.recordEnable(tracks[0], -1);
-        _sequencer.setSequence(_sequence);
+        tracks[0] = sequence.createTrack();
+        sequencer.recordEnable(tracks[0], -1);
+        sequencer.setSequence(sequence);
 
         MIDISequenceTools.setUpSystem(tracks);
         MIDISequenceTools.setTempo(tracks);
@@ -46,8 +46,8 @@ public class MIDIRecorder {
      * Starts recording.
      */
     public void startRecording() throws Exception {
-        _sequencer.open();
-        _sequencer.startRecording();
+        sequencer.open();
+        sequencer.startRecording();
         isRecording = true;
     }
 
@@ -55,8 +55,8 @@ public class MIDIRecorder {
      * Stops recording.
      */
     public void stopRecording() throws Exception {
-        _sequencer.close();
-        _sequencer.stopRecording();
+        sequencer.close();
+        sequencer.stopRecording();
         isRecording = false;
     }
 
@@ -69,6 +69,6 @@ public class MIDIRecorder {
             throw new Exception("DON'T YOU DARE REQEUST A SEQUENCE WHILE RECORDING.");
         }
 
-        return _sequence;
+        return sequence;
     }
 }

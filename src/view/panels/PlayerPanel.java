@@ -124,10 +124,10 @@ public class PlayerPanel extends JPanel {
      * ACtually creates the text field.
      * @param textFieldPanel
      */
-//    private void createTextField(JPanel textFieldPanel) {
-//        filename_field = new JTextField(10);
-//        textFieldPanel.add(filename_field);
-//    }
+    private void createTextField(JPanel textFieldPanel) {
+        filename_field = new JTextField(10);
+        textFieldPanel.add(filename_field);
+    }
 
     /**
      * Sets up the panel for the status field.

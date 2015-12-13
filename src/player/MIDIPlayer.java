@@ -22,10 +22,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MIDIPlayer {
-    private final Sequencer _sequencer = MidiSystem.getSequencer();
-    private Sequence _currSequence;
-    private PNGMusic _pngmusic;
-    private boolean _isPlaying;
+    private final Sequencer sequencer = MidiSystem.getSequencer();
+    private Sequence currSequence;
+    private PNGMusic pngmusic;
+    private boolean isPlaying;
 
     /**
      * Initializes the MIDIPlayer by loading the system's default
@@ -34,9 +34,9 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public MIDIPlayer() throws Exception {
-        _currSequence = null;
-        _pngmusic = new PNGMusic();
-        _isPlaying = false;
+        currSequence = null;
+        pngmusic = new PNGMusic();
+        isPlaying = false;
     }
     
     /**
@@ -46,10 +46,10 @@ public class MIDIPlayer {
      */
     public void open(File file) throws Exception {
     	if(ImageAndMusicTools.isValidPNGFile(file)) {
-    		_pngmusic.loadImage(file);
-    		_currSequence = _pngmusic.imageToMidi();
+    		pngmusic.loadImage(file);
+    		currSequence = pngmusic.imageToMidi();
     	} else if(ImageAndMusicTools.isValidMidiFile(file)) {
-            _currSequence = MidiSystem.getSequence(file);
+            currSequence = MidiSystem.getSequence(file);
     	}
     	else throw new IllegalArgumentException("not a valid .mid or .png file");
     }
@@ -60,7 +60,7 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public BufferedImage convertSequenceToPNG() throws Exception {
-        BufferedImage image = _pngmusic.midiToImage(_currSequence);
+        BufferedImage image = pngmusic.midiToImage(currSequence);
         return image;
     }
 
@@ -79,7 +79,7 @@ public class MIDIPlayer {
             file = new File(generateConflictFilename(name, copy++));
         }
 
-        MidiSystem.write(_currSequence, 1, file);
+        MidiSystem.write(currSequence, 1, file);
     }
     
     /**
@@ -102,13 +102,13 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void play() throws Exception {
-        if(_currSequence == null)
+        if(currSequence == null)
             throw new InvalidMidiDataException("no song is loaded =(");
 
-        _sequencer.open();
-        _sequencer.setSequence(_currSequence);
-        _sequencer.start();
-        _isPlaying = true;
+        sequencer.open();
+        sequencer.setSequence(currSequence);
+        sequencer.start();
+        isPlaying = true;
     }
 
     /**
@@ -116,8 +116,8 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void pause() throws Exception {
-        _sequencer.stop();
-        _isPlaying = false;
+        sequencer.stop();
+        isPlaying = false;
     }
 
     /**
@@ -125,10 +125,10 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void resume() throws Exception {
-        _sequencer.start();
-        if(_isPlaying)
+        sequencer.start();
+        if(isPlaying)
         	pause();
-        else _isPlaying = true;
+        else isPlaying = true;
     }
 
     /**
@@ -136,29 +136,7 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void stop() throws Exception {
-        _sequencer.close();
-        _isPlaying = false;
+        sequencer.close();
+        isPlaying = false;
     }
-
-//    public static void main(String[] args) throws Exception {
-//    	MIDIPlayer player = new MIDIPlayer();
-//    	player.open("InputMidiFiles/ricercar-a-6-harp.mid");
-//    	player.play();
-//    	Scanner scanner = new Scanner(System.in);
-//    	String command;
-//    	while(true) {
-//	        command = scanner.next();
-//	        if(command.equals("pause"))
-//	            player.pause();
-//	        else if(command.equals("resume"))
-//	            player.resume();
-//	        else if(command.equals("stop"))
-//	            player.stop();
-//	        else if(command.equals("start"))
-//	            player.play();
-//	        else if(command.equals("quit"))
-//	        	break;
-//    	}
-//    	scanner.close();
-//    }
 }
