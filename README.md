@@ -1,6 +1,8 @@
 # MIDI-Image-Converter
 
-This was my final project for CS 242 Fall 2013 at the University of Illinois at Urbana-Champaign. The project proposal might prove interesting reading for anyone looking for more information as to how this came about. 
+This was my final project for CS 242 Fall 2013 at the University of Illinois at Urbana-Champaign. The project proposal might prove interesting reading for anyone looking for more information as to how this came about.
+
+The project is built on the model-view-controller pattern, and uses Swing for the GUI and ```javax.sound.midi``` for everything midi-related.
 
 Expansions of various kinds are currently underway.
 
