@@ -207,18 +207,18 @@ public class PlayerPanel extends JPanel {
      * Opens the file chooser.
      */
     public void openFileChooser() {
-    	fileChooser.showOpenDialog(this);
-    	fileChooser.addChoosableFileFilter(new MidiOrImageFilter());
+        fileChooser.addChoosableFileFilter(new MidiOrImageFilter());
     	fileChooser.setAcceptAllFileFilterUsed(false);
+    	fileChooser.showOpenDialog(this);
     }
     
     /**
      * Opens the file chooser in save mode or whatever.
      */
     public void openFileSaver() {
-    	fileChooser.showSaveDialog(this);
     	fileChooser.addChoosableFileFilter(new MidiOrImageFilter());
     	fileChooser.setAcceptAllFileFilterUsed(false);
+    	fileChooser.showSaveDialog(this);
     }
     
     /**

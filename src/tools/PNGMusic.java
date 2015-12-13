@@ -84,17 +84,9 @@ public class PNGMusic {
 
     /**
      * Loads an image from a file.
-     * @param filename
+     * @param file
      * @throws Exception
      */
-    public void loadImage(String filename) throws Exception {
-        if(!ImageAndMusicTools.isValidPNGFilename(filename))
-            throw new IllegalArgumentException();
-
-        File file = new File(filename);
-        loadImage(file);
-    }
-    
     public void loadImage(File file) throws Exception {
         if(!file.exists())
             throw new FileNotFoundException("File does not exist");
@@ -178,8 +170,6 @@ public class PNGMusic {
                         notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index+1], eventIndex);
                         rgb[index] = ImageAndMusicTools.pitchToColor(notes[index]);
                     }
-                    
-                    //e.printStackTrace();
                 }
 
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
@@ -196,16 +186,4 @@ public class PNGMusic {
         newImage.getGraphics().drawImage(image, 0, 0 , null);
         return newImage;
     }
-
-    /**
-     * Saves the sequence generated from the image as a MIDI file.
-     * @param filename
-     * @throws Exception
-     */
-    /*
-    public void save(String filename) throws IOException {
-        File file = new File(filename);
-        MidiSystem.write(_sequence, 1, file);
-    }
-    */
 }

@@ -25,6 +25,7 @@ public class MIDIPlayer {
     private final Sequencer _sequencer = MidiSystem.getSequencer();
     private Sequence _currSequence;
     private PNGMusic _pngmusic;
+    private boolean _isPlaying;
 
     /**
      * Initializes the MIDIPlayer by loading the system's default
@@ -35,31 +36,11 @@ public class MIDIPlayer {
     public MIDIPlayer() throws Exception {
         _currSequence = null;
         _pngmusic = new PNGMusic();
-    }
-
-    /**
-     * Opens a MIDI file with the given name, or loads a MIDI sequence
-     * created from a PNG file.
-     * @param filename
-     * @throws Exception
-     */
-    public void open(String filename) throws Exception {
-        if(ImageAndMusicTools.isValidPNGFilename(filename)) {
-            _pngmusic.loadImage(filename);
-            _currSequence = _pngmusic.imageToMidi();
-        } else if(ImageAndMusicTools.isValidMidiFilename(filename)){
-            File song = new File(filename);
-
-            if(!song.exists())
-            	throw new FileNotFoundException();
-
-            _currSequence = MidiSystem.getSequence(song);
-        } 
-        else throw new IllegalArgumentException("not a valid .mid or .png file");
+        _isPlaying = false;
     }
     
     /**
-     * Opens a file directly.
+     * Opens a midi file.
      * @param file
      * @throws Exception
      */
@@ -127,6 +108,7 @@ public class MIDIPlayer {
         _sequencer.open();
         _sequencer.setSequence(_currSequence);
         _sequencer.start();
+        _isPlaying = true;
     }
 
     /**
@@ -135,6 +117,7 @@ public class MIDIPlayer {
      */
     public void pause() throws Exception {
         _sequencer.stop();
+        _isPlaying = false;
     }
 
     /**
@@ -143,6 +126,9 @@ public class MIDIPlayer {
      */
     public void resume() throws Exception {
         _sequencer.start();
+        if(_isPlaying)
+        	pause();
+        else _isPlaying = true;
     }
 
     /**
@@ -151,6 +137,7 @@ public class MIDIPlayer {
      */
     public void stop() throws Exception {
         _sequencer.close();
+        _isPlaying = false;
     }
 
 //    public static void main(String[] args) throws Exception {

@@ -22,6 +22,9 @@ public class MIDIPlayerView {
     private final PlayerPanel playerPanel = new PlayerPanel();
     private final RecordingPanel recordingPanel = new RecordingPanel();
     
+    private JMenuItem openMenuItem;
+    private JMenuItem saveMenuItem;
+    
     public static final int FRAME_WIDTH = 400;
     public static final int FRAME_HEIGHT = 250;
 
@@ -31,10 +34,11 @@ public class MIDIPlayerView {
     public MIDIPlayerView() {
         applicationWindow.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         applicationWindow.setIconImage(Toolkit.getDefaultToolkit().getImage("ViewImages/music_icon.png"));
-        //setUpMenuBar();
+        setUpMenuBar();
         setUpPlayerPanel();
-        //setUpRecordingPanel();
+        setUpRecordingPanel();
         applicationWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        applicationWindow.setLocationRelativeTo(null);
         applicationWindow.setVisible(true);
     }
 
@@ -97,6 +101,13 @@ public class MIDIPlayerView {
         switchView.add(recordMusic);
 
         JMenu filemenu = new JMenu("File");
+        
+        openMenuItem = new JMenuItem("Open");
+        filemenu.add(openMenuItem);
+        
+        saveMenuItem = new JMenuItem("Save As");
+        filemenu.add(saveMenuItem);
+        
         JMenuItem quit = new JMenuItem("Quit");
         quit.addActionListener(new ActionListener() {
             /**
@@ -168,6 +179,7 @@ public class MIDIPlayerView {
      */
     public void addFileOpenListener(ActionListener openAction) {
         playerPanel.addOpenActionListener(openAction);
+        openMenuItem.addActionListener(openAction);
     }
 
     /**
@@ -176,6 +188,7 @@ public class MIDIPlayerView {
      */
     public void addPlayerFileSaveListener(ActionListener saveAction) {
         playerPanel.addSaveActionListener(saveAction);
+        saveMenuItem.addActionListener(saveAction);
     }
 
     /**

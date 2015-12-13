@@ -188,7 +188,13 @@ public class MIDIPlayerController {
         _view.addPlayerBackListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Doesn't do anything.
+                try {
+                    _model.stop();
+                    _model.play();
+                    _view.setStatusFieldText("Playing");
+                } catch (Exception exception) {
+                    //Do nothing.
+                }
             }
         });
     }
@@ -200,7 +206,12 @@ public class MIDIPlayerController {
         _view.addPlayerForwardListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Doesn't do anything.
+                try {
+                    _model.stop();
+                    _view.setStatusFieldText("Stopped");
+                } catch (Exception exception) {
+                    //Do nothing.
+                }
             }
         });
     }
