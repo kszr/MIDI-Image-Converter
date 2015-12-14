@@ -55,6 +55,15 @@ public class Note {
 		return this.pitch;
 	}
 	
+	/**
+	 * Returns the name(s) of this note. If the note has two possible values (i.e.,
+	 * for black notes), then it returns both names.
+	 * @return
+	 */
+	public String[] getName() {
+		return name;
+	}
+	
 	private void setDuration() {
 		duration = 0.0;
 		switch(length) {
@@ -84,7 +93,7 @@ public class Note {
 	}
 	
 	/**
-	 * Sets the name of a note (e.g., C1). For black keys, it sets
+	 * Sets the name of a note (e.g. C1).
 	 */
 	private void setName() { 
 		String rawName = "";
@@ -119,12 +128,4 @@ public class Note {
 		name = rawName.split(",");
 	}
 	
-	/**
-	 * Returns the name(s) of this note. If the note has two possible values (i.e.,
-	 * for black notes), then it returns both names.
-	 * @return
-	 */
-	public String[] getName() {
-		return name;
-	}
 }

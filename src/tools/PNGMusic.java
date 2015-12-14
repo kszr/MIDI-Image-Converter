@@ -160,11 +160,10 @@ public class PNGMusic {
         int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution() * 4);
 
         BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
-        System.out.println(side);
+        System.err.println("INFO: Image side length = " + side);
 
         for(int i=0; i<sequence.getTracks().length; i++)
-        	System.out.println(sequence.getTracks()[i].size());
-       
+        	System.err.println("INFO: Track #" + i + " size = " + sequence.getTracks()[i].size());
         
         int eventIndex = 0;
         for(int row=0; row<side; row++) {
@@ -173,35 +172,35 @@ public class PNGMusic {
                     eventIndex++;
                 }
 
+                /**
+                 * At present I'm making a different track representing R, G, and B values,
+                 * so it's necessary to make sure that those tracks exist and are of comparable length.
+                 */
                 int[] rgb = {-1, -1, -1};
                 Note[] notes = new Note[3];
                 Track[] allTracks = sequence.getTracks();
-                Track[] kLongest = getKLongestTracks(allTracks, 3);
-               
-                try {
-                	int size = Math.min(3, kLongest.length);
-                	for(int index=0; index<size; index++) {
-                		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex);
-                		System.out.println("PITCH!!! " + notes[index].getPitch());
-                		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
-                			int pitch = Math.abs(21 - notes[index].getPitch()) < Math.abs(108 - notes[index].getPitch()) ? 21 : 108;
-                			Note newNote = new Note(notes[index].getLength(), notes[index].getDot(), pitch);
-                			notes[index] = newNote;
-                		}
-                		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);
-                	}
-                	int j = 3 - kLongest.length;
-                	for(int index=0; index<j; index++) {
-                		rgb[index] = 255;
+                int k = 3;
+                Track[] kLongest = getKLongestTracks(allTracks, k);
+                for(int i=1; i<k; i++) {
+                	if(kLongest[i-1].size() - kLongest[i].size() >= 100) {
+                		kLongest[i] = kLongest[i-1];
                 	}
                 }
-                catch(Exception e) {
-//                    for(int index=0; index<3; index++) {
-//                        notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index+1], eventIndex);
-//                        rgb[index] = ImageAndMusicTools.pitchToColor(notes[index]);
-//                    }
-                	e.printStackTrace();
-                }
+
+            	int size = Math.min(3, kLongest.length);
+            	for(int index=0; index<size; index++) {
+            		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex);
+            		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
+            			int pitch = Math.abs(21 - notes[index].getPitch()) < Math.abs(108 - notes[index].getPitch()) ? 21 : 108;
+            			Note newNote = new Note(notes[index].getLength(), notes[index].getDot(), pitch);
+            			notes[index] = newNote;
+            		}
+            		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);
+            	}
+            	int j = 3 - kLongest.length;
+            	for(int index=0; index<j; index++) {
+            		rgb[index] = (int) Math.random()*100 + 70; // Just a random number.
+            	}
 
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
 
@@ -219,8 +218,8 @@ public class PNGMusic {
     }
     
     /**
-     * Uses the partial selection sort algorithm to obtain the 3 longest tracks in the track list. In case
-     * the track list has fewer than three tracks, the function creates blank tracks to make up for
+     * Uses the partial selection sort algorithm to obtain the k longest tracks in the track list. Or
+     * tracks.length - whichever is smaller.
      * the difference.
      * @param tracks
      * @return
@@ -241,7 +240,7 @@ public class PNGMusic {
     		tracks[i] = tracks[maxindex];
     		tracks[maxindex] = temp;
     	}
-    	kLongest = Arrays.copyOfRange(tracks, 0, k-1);
+    	kLongest = Arrays.copyOfRange(tracks, 0, k);
     	return kLongest;
     }
 }
