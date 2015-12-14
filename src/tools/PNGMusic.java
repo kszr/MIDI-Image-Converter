@@ -28,6 +28,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 /**
  * A class that handles conversion between Images and Music.
@@ -173,19 +174,33 @@ public class PNGMusic {
                 }
 
                 int[] rgb = {-1, -1, -1};
-                int[] notes = new int[3];
+                Note[] notes = new Note[3];
+                Track[] allTracks = sequence.getTracks();
+                Track[] kLongest = getKLongestTracks(allTracks, 3);
                
                 try {
-                    for(int index=0; index<3; index++) {
-                        notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index], eventIndex);
-                        rgb[index] = ImageAndMusicTools.pitchToColor(notes[index]);
-                    }
+                	int size = Math.min(3, kLongest.length);
+                	for(int index=0; index<size; index++) {
+                		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex);
+                		System.out.println("PITCH!!! " + notes[index].getPitch());
+                		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
+                			int pitch = Math.abs(21 - notes[index].getPitch()) < Math.abs(108 - notes[index].getPitch()) ? 21 : 108;
+                			Note newNote = new Note(notes[index].getName(), notes[index].getDot(), pitch);
+                			notes[index] = newNote;
+                		}
+                		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);
+                	}
+                	int j = 3 - kLongest.length;
+                	for(int index=0; index<j; index++) {
+                		rgb[index] = 255;
+                	}
                 }
                 catch(Exception e) {
-                    for(int index=0; index<3; index++) {
-                        notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index+1], eventIndex);
-                        rgb[index] = ImageAndMusicTools.pitchToColor(notes[index]);
-                    }
+//                    for(int index=0; index<3; index++) {
+//                        notes[index] = MIDISequenceTools.getNoteFromTrack(sequence.getTracks()[index+1], eventIndex);
+//                        rgb[index] = ImageAndMusicTools.pitchToColor(notes[index]);
+//                    }
+                	e.printStackTrace();
                 }
 
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
@@ -201,5 +216,32 @@ public class PNGMusic {
         newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         newImage.getGraphics().drawImage(image, 0, 0 , null);
         return newImage;
+    }
+    
+    /**
+     * Uses the partial selection sort algorithm to obtain the 3 longest tracks in the track list. In case
+     * the track list has fewer than three tracks, the function creates blank tracks to make up for
+     * the difference.
+     * @param tracks
+     * @return
+     */
+    private static Track[] getKLongestTracks(Track[] tracks, int k) {
+    	k = Math.min(k, tracks.length);
+    	Track[] kLongest = new Track[k];
+    	for(int i=0; i<k; i++) {
+    		int maxindex = i;
+    		Track maxvalue = tracks[i];
+    		for(int j=i+1; j<tracks.length; j++) {
+    			if(tracks[j].size() > maxvalue.size()) {
+    				maxindex = j;
+    				maxvalue = tracks[j];
+    			}
+    		}
+    		Track temp = tracks[i];
+    		tracks[i] = tracks[maxindex];
+    		tracks[maxindex] = temp;
+    	}
+    	kLongest = Arrays.copyOfRange(tracks, 0, k-1);
+    	return kLongest;
     }
 }

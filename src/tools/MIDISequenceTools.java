@@ -204,11 +204,12 @@ public class MIDISequenceTools {
      * @param track
      * @param eventIndex
      */
-    public static int getNoteFromTrack(Track track, int eventIndex) {
+    public static Note getNoteFromTrack(Track track, int eventIndex) {
         MidiEvent currEvent = track.get(eventIndex);
         MidiMessage message = currEvent.getMessage();
         byte[] messageArray = message.getMessage();
-        int note = (int) messageArray[1];
+        int pitch = (int) messageArray[1];
+        Note note = new Note(Note.Name.QUARTER, Note.Dot.ZERO, pitch);
         return note;
     }
 }

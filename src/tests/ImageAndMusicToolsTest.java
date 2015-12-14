@@ -39,17 +39,17 @@ public class ImageAndMusicToolsTest {
 //        }
 //    }
 
-    @Test
-    public void testPitchToColor() {
-        int[] pitches = new int[86];
-
-        for(int index=0; index<86; index++) {
-            pitches[index] = 21 + index;
-        }
-
-        for(int pitch : pitches) {
-            int intensity = ImageAndMusicTools.pitchToColor(pitch);
-            Assert.assertTrue(intensity >= 0 && intensity <= 255);
-        }
-    }
+//    @Test
+//    public void testPitchToColor() {
+//        int[] pitches = new int[86];
+//
+//        for(int index=0; index<86; index++) {
+//            pitches[index] = 21 + index;
+//        }
+//
+//        for(int pitch : pitches) {
+//            int intensity = ImageAndMusicTools.pitchToColor(pitch);
+//            Assert.assertTrue(intensity >= 0 && intensity <= 255);
+//        }
+//    }
 }

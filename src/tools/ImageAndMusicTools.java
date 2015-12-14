@@ -54,8 +54,8 @@ public class ImageAndMusicTools {
      * Approximately the inverse of the function used in colorToPitch().
      * @return
      */
-    public static int pitchToColor(int note) {
-        return (note-21)*3;
+    public Integer pitchToColor(Note note) {
+        return lightSoundMapper.getColor(note);
     }
     
     /**
