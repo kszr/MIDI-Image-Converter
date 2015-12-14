@@ -59,12 +59,12 @@ public class PNGMusic {
      * @throws Exception
      */
     public PNGMusic() throws Exception {
-        initializeSequence();
+        //initializeSequence();
         imageAndMusicTools = new ImageAndMusicTools();
     }
     
     public PNGMusic(AudioVisual map) throws Exception {
-        initializeSequence();
+        //initializeSequence();
         imageAndMusicTools = new ImageAndMusicTools(map);
     }
 
@@ -118,26 +118,27 @@ public class PNGMusic {
         int width = imageData.getWidth();
         int height = imageData.getHeight();
 
+        //Initialize ticks in each track to 1.
         long[] ticks = new long[3];
         ticks[0] = ticks[1] = ticks[2] = 1;
 
         for(int row=0; row<height; row++) {
             for(int column=0; column<width; column++) {
                 int color = imageData.getRGB(column, row);
-
                 int[] argb = ImageAndMusicTools.getARGB(color);
-                
                 Note[] notes = new Note[3];
                 for(int i=0; i<tracks.length; i++)
                 	notes[i] = imageAndMusicTools.colorToNote(argb[i+1]);
 
+                /**
+                 * Turn the note at notes[index] on in tracks[index] at the specified tick,
+                 * and then turn it off after a number of ticks corresponding to its
+                 * length have passed.
+                 */
                 for(int index=0; index<tracks.length; index++) {
                     MIDISequenceTools.setNoteOn(tracks[index], notes[index], 0x60, ticks[index]);
-                }
-
-                for(int index=0; index<tracks.length; index++) {
-                    MIDISequenceTools.setNoteOff(tracks[index], notes[index], 0x40, ticks[index] + (int) notes[index].getDuration()*TICKS_PER_WHOLE_NOTE);
                     ticks[index] += notes[index].getDuration()*TICKS_PER_WHOLE_NOTE;
+                    MIDISequenceTools.setNoteOff(tracks[index], notes[index], 0x40, ticks[index]);
                 }
             }
         }
@@ -146,7 +147,6 @@ public class PNGMusic {
         for(Track track : tracks) {
             MIDISequenceTools.setEndOfTrack(track, tick + 19);
         }
-
         return sequence;
     }
 
@@ -156,22 +156,19 @@ public class PNGMusic {
      * @throws Exception
      * @TODO	Need to better deal with uncertainties in note lengths and track counts.
      */
-    public BufferedImage midiToImage(Sequence sequence) {
+    public BufferedImage midiToImage(Sequence sequence) throws Exception {
+    	initializeSequence();
         int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution() * 4);
-
         BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
+        
         System.err.println("INFO: Image side length = " + side);
-
         for(int i=0; i<sequence.getTracks().length; i++)
         	System.err.println("INFO: Track #" + i + " size = " + sequence.getTracks()[i].size());
         
-        int eventIndex = 0;
+        int[] eventIndex = new int[3];
+        eventIndex[0] = eventIndex[1] = eventIndex[2] = 0;
         for(int row=0; row<side; row++) {
             for(int column=0; column<side; column++) {
-                while((MIDISequenceTools.getMessageType(sequence.getTracks()[1], eventIndex) & 0xFF) != ShortMessage.NOTE_ON) {
-                    eventIndex++;
-                }
-
                 /**
                  * At present I'm making a different track representing R, G, and B values,
                  * so it's necessary to make sure that those tracks exist and are of comparable length.
@@ -181,15 +178,20 @@ public class PNGMusic {
                 Track[] allTracks = sequence.getTracks();
                 int k = 3;
                 Track[] kLongest = getKLongestTracks(allTracks, k);
-                for(int i=1; i<k; i++) {
-                	if(kLongest[i-1].size() - kLongest[i].size() >= 100) {
-                		kLongest[i] = kLongest[i-1];
-                	}
-                }
-
+                
+//                for(int i=1; i<k; i++) {
+//                	if(kLongest[i-1].size() - kLongest[i].size() >= 100) {
+//                		kLongest[i] = kLongest[i-1];
+//                	}
+//                }
             	int size = Math.min(3, kLongest.length);
+
             	for(int index=0; index<size; index++) {
-            		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex);
+                    while((MIDISequenceTools.getMessageType(sequence.getTracks()[index], eventIndex[index]) & 0xFF) != ShortMessage.NOTE_ON) {
+                        eventIndex[index]++;
+                    }
+            		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex[index]);
+            		
             		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
             			int pitch = Math.abs(21 - notes[index].getPitch()) < Math.abs(108 - notes[index].getPitch()) ? 21 : 108;
             			Note newNote = new Note(notes[index].getLength(), notes[index].getDot(), pitch);
@@ -199,17 +201,12 @@ public class PNGMusic {
             	}
             	int j = 3 - kLongest.length;
             	for(int index=0; index<j; index++) {
-            		rgb[index] = (int) Math.random()*100 + 70; // Just a random number.
+            		rgb[index] = (int) Math.random()*100 + 70; // Just a random number. =/
             	}
-
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-
                 newImage.setRGB(column, row, color);
-
-                eventIndex ++;
             }
         }
-
         Image image = newImage;
         image = image.getScaledInstance(DISPLAY_SIZE, DISPLAY_SIZE, Image.SCALE_SMOOTH);
         newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);

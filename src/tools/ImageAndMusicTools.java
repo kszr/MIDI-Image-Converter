@@ -72,12 +72,13 @@ public class ImageAndMusicTools {
      * @param filename
      * @return
      */
-	public static boolean isValidPNGFilename(String filename) {
-		return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".png");
+	public static boolean isValidImageFilename(String filename) {
+		return filename.length()>4 && (filename.substring(filename.length()-4).equalsIgnoreCase(".png") ||
+				filename.substring(filename.length()-4).equalsIgnoreCase(".jpg"));
 	}
 	
-	public static boolean isValidPNGFile(File file) {
-		return file.exists() && isValidPNGFilename(file.getName());
+	public static boolean isValidImageFile(File file) {
+		return file.exists() && isValidImageFilename(file.getName());
 	}
 
 	public static boolean isValidMidiFile(File file) {

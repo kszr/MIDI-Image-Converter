@@ -13,7 +13,8 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
-import audiovisual.LengthAudioVisual;
+import audiovisual.AudioVisual;
+import audiovisual.SimpleAudioVisual;
 import tools.ImageAndMusicTools;
 import tools.PNGMusic;
 
@@ -31,13 +32,24 @@ public class MIDIPlayer {
     /**
      * Initializes the MIDIPlayer by loading the system's default
      * sequencer and synthesizer. Assumes that these exist, because
-     * they probably do.
+     * they probably do. Loads a SimpleAudioVisual object.
      * @throws Exception
      */
     public MIDIPlayer() throws Exception {
         currSequence = null;
-        pngmusic = new PNGMusic(new LengthAudioVisual());
+        pngmusic = new PNGMusic(new SimpleAudioVisual());
         isPlaying = false;
+    }
+    
+    /**
+     * Loads the AudioVisual object that is passed in.
+     * @param av
+     * @throws Exception
+     */
+    public MIDIPlayer(AudioVisual av) throws Exception {
+    	currSequence = null;
+    	pngmusic = new PNGMusic(av);
+    	isPlaying = false;
     }
     
     /**
@@ -46,7 +58,7 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public void open(File file) throws Exception {
-    	if(ImageAndMusicTools.isValidPNGFile(file)) {
+    	if(ImageAndMusicTools.isValidImageFile(file)) {
     		pngmusic.loadImage(file);
     		currSequence = pngmusic.imageToMidi();
     	} else if(ImageAndMusicTools.isValidMidiFile(file)) {
@@ -71,7 +83,7 @@ public class MIDIPlayer {
      */
     public void save(String name) throws Exception {
         if(!ImageAndMusicTools.isValidMidiFilename(name))
-            throw new IllegalArgumentException("invalid filename");
+            throw new IllegalArgumentException(".mid extensions only");
 
         File file = new File(name);
 

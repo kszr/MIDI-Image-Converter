@@ -57,7 +57,8 @@ public class PlayerPanel extends JPanel {
 		    String extension = getExtension(f);
 		    if (extension != null) {
 		        if (extension.equals("mid") ||
-		            extension.equals("png")) {
+		            extension.equals("png") ||
+		            extension.equals("jpg")) {
 		                return true;
 		        } else {
 		            return false;

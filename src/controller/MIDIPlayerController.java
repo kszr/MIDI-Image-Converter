@@ -119,6 +119,7 @@ public class MIDIPlayerController {
                 }
                 catch(Exception exception) {
                 	//Doesn't do anything.
+                	exception.printStackTrace();
                 }
             }
         });
