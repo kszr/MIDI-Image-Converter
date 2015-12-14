@@ -86,9 +86,9 @@ public class Note {
 			case ZERO: break;
 			case ONE: duration += 0.5*duration;
 					  break;
-			case TWO: duration += 0.25*duration;
+			case TWO: duration += 0.75*duration;
 					  break;
-			case THREE: duration += 0.125*duration;
+			case THREE: duration += 0.875*duration;
 		}
 	}
 	
