@@ -185,7 +185,7 @@ public class PNGMusic {
                 		System.out.println("PITCH!!! " + notes[index].getPitch());
                 		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
                 			int pitch = Math.abs(21 - notes[index].getPitch()) < Math.abs(108 - notes[index].getPitch()) ? 21 : 108;
-                			Note newNote = new Note(notes[index].getName(), notes[index].getDot(), pitch);
+                			Note newNote = new Note(notes[index].getLength(), notes[index].getDot(), pitch);
                 			notes[index] = newNote;
                 		}
                 		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);

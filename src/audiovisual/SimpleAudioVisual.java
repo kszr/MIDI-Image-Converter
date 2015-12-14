@@ -26,6 +26,6 @@ public class SimpleAudioVisual implements AudioVisual {
 	public Note getNote(Integer color) {
 		if(color < 0 || color > 255)
 			throw new IllegalArgumentException("color is an integer between 0 and 255");
-		return new Note(Note.Name.SIXTEENTH, Note.Dot.ZERO, (21 + color/3));
+		return new Note(Note.Length.SIXTEENTH, Note.Dot.ZERO, (21 + color/3));
 	}
 }

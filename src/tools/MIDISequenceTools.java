@@ -209,7 +209,7 @@ public class MIDISequenceTools {
         MidiMessage message = currEvent.getMessage();
         byte[] messageArray = message.getMessage();
         int pitch = (int) messageArray[1];
-        Note note = new Note(Note.Name.QUARTER, Note.Dot.ZERO, pitch);
+        Note note = new Note(Note.Length.QUARTER, Note.Dot.ZERO, pitch);
         return note;
     }
 }

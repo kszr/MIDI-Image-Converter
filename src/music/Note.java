@@ -11,7 +11,7 @@ package music;
  * Time: 2:57:39 PM
  */
 public class Note {
-	public enum Name {
+	public enum Length {
 		WHOLE, HALF, QUARTER, EIGHTH, SIXTEENTH, THIRTY_SECOND, SIXTY_FOURTH
 	}
 	
@@ -19,26 +19,28 @@ public class Note {
 		ZERO, ONE, TWO, THREE
 	}
 	
-	private Name name;
+	private Length length;
 	private Dot dot;
 	public double duration;
 	private int pitch;
+	private String[] name;
 	
 	/**
 	 * Initializes a note.
-	 * @param name
-	 * @param dotx
+	 * @param length
+	 * @param dot
 	 * @param pitch	Pitch needs to correspond to the Midi standard.
 	 */
-	public Note(Name name, Dot dotx, int pitch) {
-		this.name = name;
-		this.dot = dotx;
+	public Note(Length length, Dot dot, int pitch) {
+		this.length = length;
+		this.dot = dot;
 		this.pitch = pitch;
 		setDuration();
+		setName();
 	}
 	
-	public Name getName() {
-		return this.name;
+	public Length getLength() {
+		return this.length;
 	}
 	
 	public Dot getDot() {
@@ -55,7 +57,7 @@ public class Note {
 	
 	private void setDuration() {
 		duration = 0.0;
-		switch(name) {
+		switch(length) {
 			case WHOLE: duration += 1.0;
 						break;
 			case HALF: duration += 0.5;
@@ -79,5 +81,50 @@ public class Note {
 					  break;
 			case THREE: duration += 0.125*duration;
 		}
+	}
+	
+	/**
+	 * Sets the name of a note (e.g., C1). For black keys, it sets
+	 */
+	private void setName() { 
+		String rawName = "";
+		int octave = (pitch-12)/12;
+		int key = (pitch-21)%12;
+		switch(key) {
+			case 0: rawName += "A" + octave;
+					break;
+			case 1: rawName += "A" + octave + "#,B" + octave + "b";
+					break;
+			case 2: rawName += "B" + octave;
+					break;
+			case 3: rawName += "C" + octave;
+					break;
+			case 4: rawName += "C" + octave + "#,D" + octave + "b";
+					break;
+			case 5: rawName += "D" + octave;
+					break;
+			case 6: rawName += "D" + octave + "#,E" + octave + "b";
+					break;
+			case 7: rawName += "E" + octave;
+					break;
+			case 8: rawName += "F" + octave;
+					break;
+			case 9: rawName += "F" + octave + "#,G" + octave + "b";
+					break;
+			case 10: rawName += "G" + octave;
+					break;
+			case 11: rawName += "G" + octave + "#,A" + (octave+1) + "b";
+		}
+		
+		name = rawName.split(",");
+	}
+	
+	/**
+	 * Returns the name(s) of this note. If the note has two possible values (i.e.,
+	 * for black notes), then it returns both names.
+	 * @return
+	 */
+	public String[] getName() {
+		return name;
 	}
 }

@@ -22,13 +22,13 @@ public class LengthAudioVisual implements AudioVisual {
 	public Note getNote(Integer color) {
 		if(color < 0 || color > 255)
 			throw new IllegalArgumentException("color is an integer between 0 and 255");
-		Note.Name name;
+		Note.Length name;
 		if(color <= 100)
-			name = Note.Name.EIGHTH;
+			name = Note.Length.EIGHTH;
 		else if(color <= 200)
-			name = Note.Name.SIXTEENTH;
+			name = Note.Length.SIXTEENTH;
 		else
-			name = Note.Name.QUARTER;
+			name = Note.Length.QUARTER;
 		return new Note(name, Note.Dot.ZERO, (21 + color/3));
 	}
 
