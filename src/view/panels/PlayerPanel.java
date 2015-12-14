@@ -148,6 +148,7 @@ public class PlayerPanel extends JPanel {
     private void createStatusField(JPanel statusFieldPanel) {
         status_field = new JTextField(30);
         status_field.setEditable(false);
+        status_field.setHighlighter(null);
         status_field.setBackground(UIManager.getColor("Panel.background"));
         status_field.setText("No file is loaded");
         statusFieldPanel.add(status_field);

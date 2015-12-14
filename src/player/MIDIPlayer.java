@@ -13,6 +13,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 
+import audiovisual.LengthAudioVisual;
 import tools.ImageAndMusicTools;
 import tools.PNGMusic;
 
@@ -35,7 +36,7 @@ public class MIDIPlayer {
      */
     public MIDIPlayer() throws Exception {
         currSequence = null;
-        pngmusic = new PNGMusic();
+        pngmusic = new PNGMusic(new LengthAudioVisual());
         isPlaying = false;
     }
     
