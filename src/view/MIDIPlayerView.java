@@ -260,7 +260,7 @@ public class MIDIPlayerView {
      * @param backAction
      */
     public void addPlayerBackListener(ActionListener backAction) {
-        playerPanel.addStopActionListener(backAction);
+        playerPanel.addBackActionListener(backAction);
     }
 
     /**
@@ -268,7 +268,7 @@ public class MIDIPlayerView {
      * @param forwardAction
      */
     public void addPlayerForwardListener(ActionListener forwardAction) {
-        playerPanel.addStopActionListener(forwardAction);
+        playerPanel.addForwardActionListener(forwardAction);
     }
     
     /**

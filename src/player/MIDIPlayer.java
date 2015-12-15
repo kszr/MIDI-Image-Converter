@@ -204,8 +204,11 @@ public class MIDIPlayer {
 
     	if(sequencer.isRunning())
         	sequencer.stop();
-    	else
+    	else {
+    		if(sequencer.getTickPosition() == sequencer.getTickLength())
+    			sequencer.setTickPosition(0);
         	sequencer.start();
+    	}
     }
 
     /**
@@ -214,6 +217,21 @@ public class MIDIPlayer {
      */
     public void stop() throws Exception {
         sequencer.close();
+    }
+    
+    /**
+     * Sets the position of the sequencer to the specified tick. If tick is
+     * greater than the number of ticks in the sequence, it sets it to the last tick
+     * instead. If tick is less than 0, it sets it to the first tick.
+     * @param tick
+     */
+    public void setTickPosition(long tick) {
+    	long length = sequencer.getTickLength();
+    	if(tick < 0)
+    		tick = 0;
+    	if(tick > length)
+    		tick = length;
+    	sequencer.setTickPosition(tick);
     }
 
 }

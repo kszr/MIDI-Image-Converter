@@ -73,7 +73,6 @@ public class MIDIPlayerController {
                 	String filename = file.getName();
                 	model.open(view.getSelectedFile());
                     view.setStatusFieldText("Opening " + filename + "...");
-                    //_model.open(filename);
                     model.stop();
                     view.setStatusFieldText("Opened " + filename);
                 }
@@ -151,6 +150,7 @@ public class MIDIPlayerController {
                     view.setStatusFieldText("Playing");
                 }
                 catch(Exception exception) {
+                	//Generally this means the sequencer is closed, so try play() instead.
                     try {
                         model.play();
                     }
@@ -204,9 +204,8 @@ public class MIDIPlayerController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    model.stop();
-                    model.play();
-                    view.setStatusFieldText("Playing");
+                    model.setTickPosition(0);
+                    view.setStatusFieldText("Back to start");
                 } catch (Exception exception) {
                     //Do nothing.
                 }
@@ -222,8 +221,8 @@ public class MIDIPlayerController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    model.stop();
-                    view.setStatusFieldText("Stopped");
+                    model.setTickPosition(Long.MAX_VALUE);
+                    view.setStatusFieldText("Reached end");
                 } catch (Exception exception) {
                     //Do nothing.
                 }
