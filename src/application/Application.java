@@ -1,6 +1,6 @@
 package application;
 
-import audiovisual.LengthAudioVisual;
+import audiovisual.*;
 import player.MIDIPlayer;
 import view.MIDIPlayerView;
 import controller.MIDIPlayerController;
@@ -15,7 +15,7 @@ import controller.MIDIPlayerController;
 public class Application {
     public static void main(String[] args) throws Exception {
         MIDIPlayerView view = new MIDIPlayerView();
-        MIDIPlayer player = new MIDIPlayer(new LengthAudioVisual());
+        MIDIPlayer player = new MIDIPlayer(new DotAudioVisual());
 		MIDIPlayerController controller = new MIDIPlayerController(view, player);
     }
 }

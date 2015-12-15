@@ -89,7 +89,7 @@ public class PNGMusic {
         tracknames[2] = "Piano LH";
 
         MIDISequenceTools.setTrackNames(tracks, tracknames);
-        MIDISequenceTools.setOmniOn(tracks);
+        MIDISequenceTools.setOmni(tracks);
         MIDISequenceTools.setPoly(tracks);
         MIDISequenceTools.setInstrument(tracks, 0);
     }

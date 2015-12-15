@@ -35,6 +35,7 @@ public class PlayerPanel extends JPanel {
     private JButton playButton;
     private JButton pauseButton;
     private JButton stopButton;
+    private JButton instrumentButton;
     private JTextField filename_field;
     private JTextField status_field;
     private final JFileChooser fileChooser = new JFileChooser();
@@ -101,11 +102,12 @@ public class PlayerPanel extends JPanel {
      * by adding components like the text field for filenames and playback buttons.
      */
     private void setUpMainPanel() {
-        setLayout(new GridLayout(3, 1));
+        setLayout(new GridLayout(4, 1));
         setSize(new Dimension(MIDIPlayerView.FRAME_WIDTH, MIDIPlayerView.FRAME_HEIGHT));
         setUpTextField();
         setUpStatusField();
         setUpPlaybackButtons();
+        setUpInstrumentButton();
     }
 
     /**
@@ -206,6 +208,19 @@ public class PlayerPanel extends JPanel {
     }
     
     /**
+     * Sets up the "change instrument" button.
+     */
+    private void setUpInstrumentButton() {
+    	JPanel instrumentPanel = new JPanel();
+        instrumentPanel.setLayout(new FlowLayout());
+        instrumentPanel.setSize(new Dimension(500, 70));
+        instrumentButton = new TextButton("Change Instrument", new Dimension(75, 35));
+        instrumentPanel.add(instrumentButton);
+        instrumentPanel.setVisible(true);
+        add(instrumentPanel);
+    }
+    
+    /**
      * Opens the file chooser.
      */
     public void openFileChooser() {
@@ -301,5 +316,14 @@ public class PlayerPanel extends JPanel {
      */
     public void addForwardActionListener(ActionListener forwardAction) {
         forwardButton.addActionListener(forwardAction);
+    }
+    
+    /**
+     * Adds the ActionListener through which the controller interacts with the
+     * "change instrument" button.
+     * @param instrumentAction
+     */
+    public void addInstrumentActionListener(ActionListener instrumentAction) {
+    	instrumentButton.addActionListener(instrumentAction);
     }
 }

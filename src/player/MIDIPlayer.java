@@ -16,6 +16,7 @@ import javax.sound.midi.Sequencer;
 import audiovisual.AudioVisual;
 import audiovisual.SimpleAudioVisual;
 import tools.ImageAndMusicTools;
+import tools.MIDISequenceTools;
 import tools.PNGMusic;
 
 import java.awt.image.BufferedImage;
@@ -76,6 +77,15 @@ public class MIDIPlayer {
         BufferedImage image = pngmusic.midiToImage(currSequence);
         return image;
     }
+    
+    /**
+     * Changes the instrument used in the sequence to that represented by instr_code.
+     * @param instr_code
+     * @throws Exception
+     */
+    public void changeInstrument(int instr_code) throws Exception {
+    	MIDISequenceTools.setInstrument(currSequence.getTracks(), instr_code);
+    }
 
     /**
      * Saves the current sequence as a Midi file.
@@ -111,7 +121,9 @@ public class MIDIPlayer {
     }
 
     /**
-     * Starts playback of current song.
+     * Starts playback of current song for the first time. (I.e.,
+     * if the sequencer is currently closed. If the sequencer is not closed,
+     * use resume() instead.)
      * @throws Exception
      */
     public void play() throws Exception {
@@ -125,23 +137,37 @@ public class MIDIPlayer {
     }
 
     /**
-     * Pauses playback.
+     * Pauses playback. Resumes playback if already paused.
      * @throws Exception
      */
     public void pause() throws Exception {
-        sequencer.stop();
-        isPlaying = false;
+    	if(!sequencer.isOpen())
+    		throw new Exception("Sequencer is not open or does not exist!");
+    	
+    	if(!isPlaying) {
+    		sequencer.start();
+    		isPlaying = true;
+    	} else {
+	        sequencer.stop();
+	        isPlaying = false;
+    	}
     }
 
     /**
-     * Resumes playback.
+     * Resumes playback. Pauses playback if playing.
      * @throws Exception
      */
     public void resume() throws Exception {
-        sequencer.start();
-        if(isPlaying)
-        	pause();
-        else isPlaying = true;
+    	if(!sequencer.isOpen())
+    		throw new Exception("Sequencer is not open or does not exist!");
+    	
+        if(isPlaying) {
+        	sequencer.stop();
+        	isPlaying = false;
+        } else {
+        	sequencer.start();
+        	isPlaying = true;
+        }
     }
 
     /**

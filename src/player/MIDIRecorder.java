@@ -37,9 +37,9 @@ public class MIDIRecorder {
         tracknames[0] = "Piano RH";
         
         MIDISequenceTools.setTrackNames(tracks, tracknames);
-        MIDISequenceTools.setOmniOn(tracks);
+        MIDISequenceTools.setOmni(tracks);
         MIDISequenceTools.setPoly(tracks);
-        MIDISequenceTools.setInstrument(tracks, new InstrumentBank().getProgram("piano 1"));
+        MIDISequenceTools.setInstrument(tracks, 0);
     }
 
     /**

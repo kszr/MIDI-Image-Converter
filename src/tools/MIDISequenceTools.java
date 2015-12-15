@@ -96,7 +96,7 @@ public class MIDISequenceTools {
      * @param tracks
      * @throws Exception
      */
-    public static void setOmniOn(Track[] tracks) throws Exception {
+    public static void setOmni(Track[] tracks) throws Exception {
         ShortMessage msg = new ShortMessage();
         msg.setMessage(ShortMessage.CONTROL_CHANGE, OMNI_ON, 0);
         MidiEvent event = new MidiEvent(msg,(long)0);
@@ -122,7 +122,7 @@ public class MIDISequenceTools {
     }
 
     /**
-     * Sets the track's instrument to that represented by code.
+     * Sets (or changes) the track's instrument to that represented by instr_code.
      * @param tracks
      * @param instr_code
      * @throws Exception
