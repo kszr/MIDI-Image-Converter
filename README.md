@@ -8,7 +8,7 @@ Expansions of various kinds are currently underway.
 
 ##What it does (or claims to do)
 
-One of the (ambitious) claims this project makes is to load image (png) files and convert them to music (midi), and vice versa.
+One of the (ambitious) claims this project makes is to load image (png, jpeg) files and convert them to music (midi), and vice versa.
 
 ##How well it does what it's supposed to do
 
