@@ -16,6 +16,7 @@ import javax.sound.midi.Sequencer;
 import audiovisual.AudioVisual;
 import audiovisual.SimpleAudioVisual;
 import tools.ImageAndMusicTools;
+import tools.InstrumentBank;
 import tools.MIDISequenceTools;
 import tools.PNGMusic;
 
@@ -26,6 +27,7 @@ import java.util.Scanner;
 
 public class MIDIPlayer {
     private final Sequencer sequencer = MidiSystem.getSequencer();
+    private final InstrumentBank instrumentBank = new InstrumentBank();
     private Sequence currSequence;
     private PNGMusic pngmusic;
     private boolean isPlaying;
@@ -74,6 +76,9 @@ public class MIDIPlayer {
      * @throws Exception
      */
     public BufferedImage convertSequenceToPNG() throws Exception {
+    	if(currSequence == null)
+    		throw new NullPointerException("No music to convert!");
+    	
         BufferedImage image = pngmusic.midiToImage(currSequence);
         return image;
     }
@@ -85,6 +90,31 @@ public class MIDIPlayer {
      */
     public void changeInstrument(int instr_code) throws Exception {
     	MIDISequenceTools.setInstrument(currSequence.getTracks(), instr_code);
+    }
+    
+    /**
+     * Changes the instrument used in the sequence to that represented by instr_code.
+     * @param instr_code
+     * @throws Exception
+     */
+    public void changeInstrument(String name) throws Exception {
+    	Integer code = instrumentBank.getProgram(name);
+    	
+    	if(currSequence == null)
+    		throw new NullPointerException("No music loaded!");
+    	
+    	if(code == null)
+    		throw new Exception("Not a valid instrument!");
+
+    	MIDISequenceTools.setInstrument(currSequence.getTracks(), code);
+    }
+    
+    /**
+     * Gets a list of all instruments in the loaded SoundBank.
+     * @return
+     */
+    public String[] getInstrumentList() {
+    	return instrumentBank.getAllNames();
     }
 
     /**
@@ -178,4 +208,5 @@ public class MIDIPlayer {
         sequencer.close();
         isPlaying = false;
     }
+
 }

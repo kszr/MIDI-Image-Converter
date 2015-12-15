@@ -27,6 +27,8 @@ public class MIDIPlayerView {
     
     public static final int FRAME_WIDTH = 400;
     public static final int FRAME_HEIGHT = 250;
+    
+    private String instrument = null;
 
     /**
      * Instantiates the JFrame with buttons and other objects.
@@ -126,17 +128,47 @@ public class MIDIPlayerView {
         applicationWindow.setJMenuBar(menubar);
     }
 
-    public void displayMessageBox(String displayText) {
-        JOptionPane.showMessageDialog(null, displayText);
+    public void displayMessageBox(String displayText, int type) {
+        JOptionPane.showMessageDialog(null, displayText, null, type);
     }
 
+    /**
+     * Opens a new window displaying the result of the midi to image conversion.
+     * @param image
+     */
     public void displayImage(BufferedImage image) {
         JFrame imageframe = new JFrame();
         imageframe.setSize(new Dimension(image.getWidth(), image.getHeight()+30));
         ImagePanel imgpanel = new ImagePanel(image);
         imgpanel.setVisible(true);
         imageframe.getContentPane().add(imgpanel);
+        imageframe.setLocationRelativeTo(applicationWindow);
         imageframe.setVisible(true);
+    }
+    
+    /**
+     * Displays a window in which the user can select an instrument by name.
+     * @param instrumentNames
+     */
+    public void displayInstrumentBank(String[] instrumentNames) {
+    	instrument = (String) JOptionPane.showInputDialog(
+    				applicationWindow,
+    				"Select an instrument",
+    				"Instrument Bank",
+    				JOptionPane.PLAIN_MESSAGE,
+    				null, 
+    				instrumentNames,
+    				null
+    			);
+    }
+    
+    /**
+     * Returns the name of the instrument selected from the instrumentBank.
+     * (RIP, MVC...)
+     * @return
+     */
+    public String getInstrument() {
+    	return instrument;
     }
     
     /**

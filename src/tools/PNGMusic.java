@@ -47,7 +47,6 @@ public class PNGMusic {
     private Sequence sequence;
     private Track[] tracks;
     
-    private InstrumentBank instrumentBank = new InstrumentBank();
     private ImageAndMusicTools imageAndMusicTools;
 
     /**
@@ -240,4 +239,5 @@ public class PNGMusic {
     	kLongest = Arrays.copyOfRange(tracks, 0, k);
     	return kLongest;
     }
+    
 }

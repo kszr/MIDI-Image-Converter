@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.JOptionPane;
+
 import player.MIDIPlayer;
 import view.MIDIPlayerView;
 
@@ -50,6 +52,7 @@ public class MIDIPlayerController {
         addStopListener();
         addBackListener();
         addForwardListener();
+        addInstrumentListener();
     }
 
     /**
@@ -61,7 +64,13 @@ public class MIDIPlayerController {
             public void actionPerformed(ActionEvent e) {
                 try {
                 	view.openFileChooser();
-                	String filename = view.getSelectedFile().getName();
+                	File file = view.getSelectedFile();
+                	
+                	//Return if the user canceled out of the window.
+                	if(file == null)
+                		return;
+                	
+                	String filename = file.getName();
                 	model.open(view.getSelectedFile());
                     view.setStatusFieldText("Opening " + filename + "...");
                     //_model.open(filename);
@@ -70,7 +79,7 @@ public class MIDIPlayerController {
                 }
                 catch(Exception exception) {
                 	view.setStatusFieldText("Failed to open file");
-                    view.displayMessageBox(exception.toString());
+                    view.displayMessageBox(exception.toString(), JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -87,6 +96,11 @@ public class MIDIPlayerController {
                 	File existingFile = view.getSelectedFile();
                 	view.openFileSaver();
                 	File newFile = view.getSelectedFile();
+                	
+                	//Return if the user canceled out of the window.
+                	if(newFile == null)
+                		return;
+                	
                 	String filename = newFile.getName();
                 	if(existingFile == null ||
                 			!existingFile.exists())
@@ -97,7 +111,7 @@ public class MIDIPlayerController {
                 }
                 catch(Exception exception) {
                 	view.setStatusFieldText("Failed to save file");
-                    view.displayMessageBox(exception.toString());
+                    view.displayMessageBox(exception.toString(), JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -112,12 +126,13 @@ public class MIDIPlayerController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     BufferedImage image = model.convertSequenceToPNG();
-                    view.setStatusFieldText("Converting to PNG...");
+                    view.setStatusFieldText("Converting to image...");
                     view.displayImage(image);
-                    view.setStatusFieldText("Converted to PNG");
-                }
-                catch(Exception exception) {
-                	//Doesn't do anything.
+                    view.setStatusFieldText("Converted to image");
+                } catch(NullPointerException npe) {
+                	view.setStatusFieldText("Failed to convert to image");
+                	view.displayMessageBox(npe.toString(), JOptionPane.ERROR_MESSAGE);
+                } catch(Exception exception) {
                 	exception.printStackTrace();
                 }
             }
@@ -140,7 +155,7 @@ public class MIDIPlayerController {
                         model.play();
                     }
                     catch(Exception exception2) {
-                        view.displayMessageBox(exception2.toString());
+                        view.displayMessageBox(exception2.toString(), JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -221,8 +236,18 @@ public class MIDIPlayerController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				try {
+					view.displayInstrumentBank(model.getInstrumentList());
+					String instrument = view.getInstrument();
+					
+					//Return if the user canceled out of the window.
+					if(instrument == null)
+						return;
+					
+					model.changeInstrument(instrument);					
+				} catch(Exception exception) {
+					view.displayMessageBox(exception.toString(), JOptionPane.ERROR_MESSAGE);
+				}
 			}
     		
     	});

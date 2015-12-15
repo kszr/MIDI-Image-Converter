@@ -52,7 +52,7 @@ public class InstrumentBank {
     private void loadInstrumentMap() {
     	Instrument[] allInstruments = soundbank.getInstruments();
     	for(Instrument instrument : allInstruments) {
-    		String name = instrument.getName().toLowerCase().trim();
+    		String name = instrument.getName().trim();
     		int program = instrument.getPatch().getProgram();
     		try {
     			instrumentMap.put(name, program);
