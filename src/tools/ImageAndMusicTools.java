@@ -20,8 +20,12 @@ public class ImageAndMusicTools {
 		lightSoundMapper = new SimpleAudioVisual();
 	}
 	
-	public ImageAndMusicTools(AudioVisual map) {
-		this.lightSoundMapper = map;
+	/**
+	 * A constructor that loads the given AudioVisual mapper.
+	 * @param map
+	 */
+	public ImageAndMusicTools(AudioVisual mapper) {
+		this.lightSoundMapper = mapper;
 	}
 	
     /**
@@ -33,10 +37,10 @@ public class ImageAndMusicTools {
     public static int[] getARGB(int color) {
         int[] argb_exploded = new int[4];
 
-        argb_exploded[0] = (color >> 24) & 0x000000FF;
-        argb_exploded[1] = (color >> 16) & 0x000000FF;
-        argb_exploded[2] = (color >>8 ) & 0x000000FF;
-        argb_exploded[3] = color & 0x000000FF;
+        argb_exploded[0] = (color >> 24) & 0xFF;
+        argb_exploded[1] = (color >> 16) & 0xFF;
+        argb_exploded[2] = (color >>8 ) & 0xFF;
+        argb_exploded[3] = color & 0xFF;
 
         return argb_exploded;
     }

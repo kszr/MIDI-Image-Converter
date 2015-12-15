@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 /**
  * A class that handles conversion between Images and Music.
+ * Despite the name, JPEG is allowed.
  * This class will be expanded to be more sophisticated.
  * (Originally written in 2013, despite the date.)
  * @author abhishekchatterjee
@@ -168,23 +169,13 @@ public class PNGMusic {
         eventIndex[0] = eventIndex[1] = eventIndex[2] = 0;
         for(int row=0; row<side; row++) {
             for(int column=0; column<side; column++) {
-                /**
-                 * At present I'm making a different track representing R, G, and B values,
-                 * so it's necessary to make sure that those tracks exist and are of comparable length.
-                 */
                 int[] rgb = {-1, -1, -1};
                 Note[] notes = new Note[3];
                 Track[] allTracks = sequence.getTracks();
                 int k = 3;
                 Track[] kLongest = getKLongestTracks(allTracks, k);
-                
-//                for(int i=1; i<k; i++) {
-//                	if(kLongest[i-1].size() - kLongest[i].size() >= 100) {
-//                		kLongest[i] = kLongest[i-1];
-//                	}
-//                }
-            	int size = Math.min(3, kLongest.length);
 
+            	int size = Math.min(3, kLongest.length);
             	for(int index=0; index<size; index++) {
                     while((MIDISequenceTools.getMessageType(sequence.getTracks()[index], eventIndex[index]) & 0xFF) != ShortMessage.NOTE_ON) {
                         eventIndex[index]++;
@@ -198,10 +189,15 @@ public class PNGMusic {
             		}
             		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);
             	}
-            	int j = 3 - kLongest.length;
+            	
+            	/**
+            	 * If getKLongestTracks() failed to return k tracks...
+            	 */
+            	int j = k - kLongest.length;
             	for(int index=0; index<j; index++) {
-            		rgb[index] = (int) Math.random()*100 + 70; // Just a random number. =/
+            		rgb[index] = 255; //Just white... =/
             	}
+            	
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
                 newImage.setRGB(column, row, color);
             }

@@ -93,7 +93,8 @@ public class Note {
 	}
 	
 	/**
-	 * Sets the name of a note (e.g. C1).
+	 * Sets the name of a note according to "Scientific Pitch Notation", as they 
+	 * call it.
 	 */
 	private void setName() { 
 		String rawName = "";

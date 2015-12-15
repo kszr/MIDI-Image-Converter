@@ -230,6 +230,9 @@ public class MIDIPlayerController {
         });
     }
     
+    /**
+     * Control for the "change instrument" button.
+     */
     private void addInstrumentListener() {
     	view.addInstrumentListener(new ActionListener() {
 
