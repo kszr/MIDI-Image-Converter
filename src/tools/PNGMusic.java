@@ -47,6 +47,7 @@ public class PNGMusic {
     private BufferedImage imageData;
     private Sequence sequence;
     private Track[] tracks;
+    private int numtracks;
     
     private ImageAndMusicTools imageAndMusicTools;
 
@@ -55,43 +56,87 @@ public class PNGMusic {
      * because it seems a good idea at the moment to have different tracks
      * for R, G, and B rather than attempting the pointless task of assigning
      * a unique value to each unique set of RGB values. (255 x 255 x 255 values for
-     * RGB, 88 keys on a piano.)
+     * RGB, 88 keys on a piano.) Number of tracks is 3 by default.
      * @throws Exception
      */
     public PNGMusic() throws Exception {
         //initializeSequence();
         imageAndMusicTools = new ImageAndMusicTools();
+        this.numtracks = 3;
     }
     
+    /**
+     * Loads the given AudioVisual object.
+     * @param map
+     * @throws Exception
+     */
     public PNGMusic(AudioVisual map) throws Exception {
         //initializeSequence();
         imageAndMusicTools = new ImageAndMusicTools(map);
+        this.numtracks = 3;
+    }
+    
+    /**
+     * Sets the number of tracks to numtracks and reinitializes the sequence.
+     * @param numtracks
+     * @throws Exception 
+     */
+    public void setNumTracks(int numtracks) throws Exception {
+    	this.numtracks = numtracks;
+    	this.initializeSequence();
+    }
+    
+    /**
+     * Returns the number of tracks in the current sequence.
+     * @return
+     */
+    public int getNumTracks() {
+    	return this.numtracks;
     }
 
     /**
-     * Sets up tracks, etc. in the sequence that is being created.
+     *Creates a new sequence and sets up tracks, etc. in it.
      * @throws Exception
      */
     private void initializeSequence() throws Exception {
         sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
-        tracks = new Track[3];
+        
+        this.initializeTracks();
 
-        for(int index=0; index<tracks.length; index++) {
-            tracks[index] = sequence.createTrack();
-        }
-
+        String[] tracknames = new String[numtracks];
+        this.setTrackNames(tracknames);
+        
         MIDISequenceTools.setUpSystem(tracks);
         MIDISequenceTools.setTempo(tracks);
-
-        String[] tracknames = new String[3];
-        tracknames[0] = "Piano RH";
-        tracknames[1] = "Nose";
-        tracknames[2] = "Piano LH";
-
         MIDISequenceTools.setTrackNames(tracks, tracknames);
         MIDISequenceTools.setOmni(tracks);
         MIDISequenceTools.setPoly(tracks);
         MIDISequenceTools.setInstrument(tracks, 0);
+    }
+    
+    /**
+     * Creates numtracks tracks and puts them into the sequence.
+     */
+    private void initializeTracks() {
+        tracks = new Track[numtracks];
+        for(int index=0; index<tracks.length; index++) {
+            tracks[index] = sequence.createTrack();
+        }
+    }
+    
+    /**
+     * Creates names for tracks. The names for the case when numtracks=3
+     * are what they are for LEGACY REASONS.
+     */
+    private void setTrackNames(String[] tracknames) {
+    	if(numtracks == 3) {
+            tracknames[0] = "Piano RH";
+            tracknames[1] = "Nose";
+            tracknames[2] = "Piano LH";
+    	} else {
+    		for(int i=0; i<numtracks; i++)
+    			tracknames[i] = "Track " + i;
+    	}
     }
 
     /**
@@ -103,7 +148,8 @@ public class PNGMusic {
         if(!file.exists())
             throw new FileNotFoundException("File does not exist");
 
-        initializeSequence();
+        //Sets the number of tracks to 3, which also (re)initializes the sequence.
+        this.setNumTracks(3);
         Image image = ImageIO.read(file);
         image = image.getScaledInstance(SCALED_SIZE, SCALED_SIZE, Image.SCALE_SMOOTH);
         imageData = new BufferedImage(SCALED_SIZE, SCALED_SIZE, BufferedImage.TYPE_3BYTE_BGR);
@@ -119,14 +165,15 @@ public class PNGMusic {
         int height = imageData.getHeight();
 
         //Initialize ticks in each track to 1.
-        long[] ticks = new long[3];
-        ticks[0] = ticks[1] = ticks[2] = 1;
+        long[] ticks = new long[numtracks];
+        for(int i=0; i<numtracks; i++)
+        	ticks[i] = 1;
 
         for(int row=0; row<height; row++) {
             for(int column=0; column<width; column++) {
                 int color = imageData.getRGB(column, row);
                 int[] argb = ImageAndMusicTools.getARGB(color);
-                Note[] notes = new Note[3];
+                Note[] notes = new Note[numtracks];
                 for(int i=0; i<tracks.length; i++)
                 	notes[i] = imageAndMusicTools.colorToNote(argb[i+1]);
 
@@ -143,11 +190,25 @@ public class PNGMusic {
             }
         }
 
-        long tick = Math.max(ticks[0], Math.max(ticks[1], ticks[2]));
+        //Use the length of the longest track in ticks to set the end of the sequence.
+        long endtick = getMax(ticks);
         for(Track track : tracks) {
-            MIDISequenceTools.setEndOfTrack(track, tick + 19);
+            MIDISequenceTools.setEndOfTrack(track, endtick + 19);
         }
         return sequence;
+    }
+    
+    /**
+     * A lame helper method that gets the max value from an array of longs.
+     * @param array
+     * @return
+     */
+    private long getMax(long[] array) {
+    	long max = Long.MIN_VALUE;
+    	for(int i=0; i<array.length; i++)
+    		if(array[i] > max)
+    			max = array[i];
+    	return max;
     }
 
     /**
@@ -158,28 +219,31 @@ public class PNGMusic {
      */
     public BufferedImage midiToImage(Sequence sequence) throws Exception {
     	initializeSequence();
-        int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution() * 4);
+        int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*4);
         BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
         
         System.err.println("INFO: Image side length = " + side);
         for(int i=0; i<sequence.getTracks().length; i++)
         	System.err.println("INFO: Track #" + i + " size = " + sequence.getTracks()[i].size());
         
-        int[] eventIndex = new int[3];
-        eventIndex[0] = eventIndex[1] = eventIndex[2] = 0;
+        //eventIndex[i] corresponds to the event index in track i.
+        int[] eventIndex = new int[numtracks];
+        for(int i=0; i<numtracks; i++)
+        	eventIndex[i] = 0;
+        
         for(int row=0; row<side; row++) {
             for(int column=0; column<side; column++) {
                 int[] rgb = {-1, -1, -1};
-                Note[] notes = new Note[3];
+                Note[] notes = new Note[numtracks];
                 Track[] allTracks = sequence.getTracks();
-                int k = 3;
-                Track[] kLongest = getKLongestTracks(allTracks, k);
+                Track[] kLongest = getKLongestTracks(allTracks, numtracks);
 
             	int size = Math.min(3, kLongest.length);
             	for(int index=0; index<size; index++) {
-                    while((MIDISequenceTools.getMessageType(sequence.getTracks()[index], eventIndex[index]) & 0xFF) != ShortMessage.NOTE_ON) {
-                        eventIndex[index]++;
+                    while((MIDISequenceTools.getMessageType(kLongest[index], eventIndex[index]) & 0xFF) != ShortMessage.NOTE_ON) {
+                    	eventIndex[index] = (eventIndex[index] + 1) % (kLongest[index].size()-1);
                     }
+                    
             		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex[index]);
             		
             		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
@@ -188,12 +252,13 @@ public class PNGMusic {
             			notes[index] = newNote;
             		}
             		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);
+            		eventIndex[index] = (eventIndex[index] + 1) % (kLongest[index].size()-1);
             	}
             	
             	/**
-            	 * If getKLongestTracks() failed to return k tracks...
+            	 * If getKLongestTracks() failed to return numtracks tracks...
             	 */
-            	int j = k - kLongest.length;
+            	int j = numtracks - kLongest.length;
             	for(int index=0; index<j; index++) {
             		rgb[index] = 255; //Just white... =/
             	}
