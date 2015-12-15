@@ -30,7 +30,6 @@ public class MIDIPlayer {
     private final InstrumentBank instrumentBank = new InstrumentBank();
     private Sequence currSequence;
     private PNGMusic pngmusic;
-    private boolean isPlaying;
 
     /**
      * Initializes the MIDIPlayer by loading the system's default
@@ -41,7 +40,6 @@ public class MIDIPlayer {
     public MIDIPlayer() throws Exception {
         currSequence = null;
         pngmusic = new PNGMusic(new SimpleAudioVisual());
-        isPlaying = false;
     }
     
     /**
@@ -52,7 +50,6 @@ public class MIDIPlayer {
     public MIDIPlayer(AudioVisual av) throws Exception {
     	currSequence = null;
     	pngmusic = new PNGMusic(av);
-    	isPlaying = false;
     }
     
     /**
@@ -166,7 +163,6 @@ public class MIDIPlayer {
         sequencer.open();
         sequencer.setSequence(currSequence);
         sequencer.start();
-        isPlaying = true;
     }
     
     /**
@@ -182,7 +178,6 @@ public class MIDIPlayer {
         sequencer.setSequence(currSequence);
         sequencer.setTickPosition(tick);
         sequencer.start();
-        isPlaying = true;
     }
 
     /**
@@ -193,13 +188,10 @@ public class MIDIPlayer {
     	if(!sequencer.isOpen())
     		throw new Exception("Sequencer is not open or does not exist!");
     	
-    	if(!isPlaying) {
+    	if(!sequencer.isRunning())
     		sequencer.start();
-    		isPlaying = true;
-    	} else {
+    	else
 	        sequencer.stop();
-	        isPlaying = false;
-    	}
     }
 
     /**
@@ -209,14 +201,11 @@ public class MIDIPlayer {
     public void resume() throws Exception {
     	if(!sequencer.isOpen())
     		throw new Exception("Sequencer is not open or does not exist!");
-    	
-        if(isPlaying) {
+
+    	if(sequencer.isRunning())
         	sequencer.stop();
-        	isPlaying = false;
-        } else {
+    	else
         	sequencer.start();
-        	isPlaying = true;
-        }
     }
 
     /**
@@ -225,7 +214,6 @@ public class MIDIPlayer {
      */
     public void stop() throws Exception {
         sequencer.close();
-        isPlaying = false;
     }
 
 }
