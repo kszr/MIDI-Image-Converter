@@ -243,9 +243,10 @@ public class MIDIPlayerController {
 					//Return if the user canceled out of the window.
 					if(instrument == null)
 						return;
-					
-					model.changeInstrument(instrument);					
+					model.changeInstrument(instrument);
+					view.setStatusFieldText("Changed instrument to " + instrument);
 				} catch(Exception exception) {
+					view.setStatusFieldText("Failed to change instrument");
 					view.displayMessageBox(exception.toString(), JOptionPane.ERROR_MESSAGE);
 				}
 			}

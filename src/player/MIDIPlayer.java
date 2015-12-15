@@ -105,8 +105,11 @@ public class MIDIPlayer {
     	
     	if(code == null)
     		throw new Exception("Not a valid instrument!");
-
+    	long tick = sequencer.getTickPosition();
     	MIDISequenceTools.setInstrument(currSequence.getTracks(), code);
+    	
+    	stop();
+    	play(tick);
     }
     
     /**
@@ -162,6 +165,22 @@ public class MIDIPlayer {
 
         sequencer.open();
         sequencer.setSequence(currSequence);
+        sequencer.start();
+        isPlaying = true;
+    }
+    
+    /**
+     * Begins playback from the given tick.
+     * @param tick
+     * @throws Exception
+     */
+    public void play(long tick) throws Exception {
+    	if(currSequence == null)
+            throw new InvalidMidiDataException("no song is loaded =(");
+    	
+    	sequencer.open();
+        sequencer.setSequence(currSequence);
+        sequencer.setTickPosition(tick);
         sequencer.start();
         isPlaying = true;
     }
