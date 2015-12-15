@@ -86,14 +86,13 @@ public class MIDIPlayerController {
                 try {
                 	File existingFile = view.getSelectedFile();
                 	view.openFileSaver();
-                	String filename = view.getSelectedFile().getName();
+                	File newFile = view.getSelectedFile();
+                	String filename = newFile.getName();
                 	if(existingFile == null ||
                 			!existingFile.exists())
                 		throw new Exception("No file loaded!");
-                	else if(!existingFile.getName().substring(existingFile.getName().length()-4).equals(filename.substring(filename.length()-4)))
-                		throw new Exception("Invalid file type!");
                     view.setStatusFieldText("Saving " + filename);
-                    model.save(filename);
+                    model.save(newFile.getAbsolutePath());
                     view.setStatusFieldText("Saved " + filename);
                 }
                 catch(Exception exception) {
@@ -215,5 +214,17 @@ public class MIDIPlayerController {
                 }
             }
         });
+    }
+    
+    private void addInstrumentListener() {
+    	view.addInstrumentListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+    		
+    	});
     }
 }

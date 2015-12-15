@@ -216,7 +216,7 @@ public class MIDIPlayerView {
     }
 
     /**
-     * Adds an actionListener to playerPanel's stop button.
+     * Adds an ActionListener to playerPanel's stop button.
      * @param stopAction
      */
     public void addPlayerStopListener(ActionListener stopAction) {
@@ -224,7 +224,7 @@ public class MIDIPlayerView {
     }
 
     /**
-     * Adds an actionListener to playerPanel's stop button.
+     * Adds an ActionListener to playerPanel's stop button.
      * @param backAction
      */
     public void addPlayerBackListener(ActionListener backAction) {
@@ -232,10 +232,18 @@ public class MIDIPlayerView {
     }
 
     /**
-     * Adds an actionListener to playerPanel's stop button.
+     * Adds an ActionListener to playerPanel's stop button.
      * @param forwardAction
      */
     public void addPlayerForwardListener(ActionListener forwardAction) {
         playerPanel.addStopActionListener(forwardAction);
+    }
+    
+    /**
+     * Adds an ActionListener to playerPanel's "change instrument" button.
+     * @param instrumentAction
+     */
+    public void addInstrumentListener(ActionListener instrumentAction) {
+    	playerPanel.addInstrumentActionListener(instrumentAction);
     }
 }
