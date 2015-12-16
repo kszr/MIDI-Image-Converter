@@ -18,7 +18,6 @@ package tools;
 
 import javax.imageio.ImageIO;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
 import tools.phonograph.Needle;
@@ -269,17 +268,6 @@ public class PNGMusic {
         newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         newImage.getGraphics().drawImage(image, 0, 0 , null);
         return newImage;
-    }
-    
-    /**
-     * Returns
-     * @param track
-     * @param currTick
-     * @param eventIndex
-     * @return
-     */
-    private Note getNextNote(Track track, long currTick, int eventIndex) {
-    	return null;
     }
     
     /**
