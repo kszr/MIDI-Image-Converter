@@ -219,30 +219,28 @@ public class PNGMusic {
      */
     public BufferedImage midiToImage(Sequence sequence) throws Exception {
     	initializeSequence();
-        int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*4);
+        int[] rgb = new int[numtracks];
+        Track[] allTracks = sequence.getTracks();
+        Track[] kLongest = getKLongestTracks(allTracks, numtracks);
+        int side = (int) Math.sqrt(kLongest[0].size());
+        //int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*42);
         BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
         
         System.err.println("INFO: Image side length = " + side);
         for(int i=0; i<sequence.getTracks().length; i++)
         	System.err.println("INFO: Track #" + i + " size = " + sequence.getTracks()[i].size());
         
-        int[] rgb = new int[numtracks];
-        Track[] allTracks = sequence.getTracks();
-        Track[] kLongest = getKLongestTracks(allTracks, numtracks);
-        
         int realnumtracks = Math.min(numtracks, kLongest.length);
         Needle[] needles = new Needle[realnumtracks];
         for(int i=0; i<realnumtracks; i++)
         	needles[i] = new Needle(kLongest[i]);
-        
+
+        Note nextNote = new Note(Note.Length.QUARTER, Note.Dot.ZERO, 0);
         for(int row=0; row<side; row++) {
             for(int column=0; column<side; column++) {
             	for(int index=0; index<realnumtracks; index++) {
-                    Note nextNote;
                     if(needles[index].hasNext())
                     	nextNote = needles[index].next();
-                    else
-                    	continue;
                 		
             		if(nextNote.getPitch() < 21 || nextNote.getPitch() > 108) {
             			int pitch = Math.abs(21 - nextNote.getPitch()) < Math.abs(108 - nextNote.getPitch()) ? 21 : 108;
