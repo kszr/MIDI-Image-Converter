@@ -203,7 +203,7 @@ public class PNGMusic {
      * @param array
      * @return
      */
-    private long getMax(long[] array) {
+    private static long getMax(long[] array) {
     	long max = Long.MIN_VALUE;
     	for(int i=0; i<array.length; i++)
     		if(array[i] > max)
