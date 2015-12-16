@@ -61,8 +61,7 @@ public class PNGMusic {
      * @throws Exception
      */
     public PNGMusic() throws Exception {
-        //initializeSequence();
-        imageAndMusicTools = new ImageAndMusicTools();
+        this.imageAndMusicTools = new ImageAndMusicTools();
         this.numtracks = 3;
     }
     
@@ -72,8 +71,7 @@ public class PNGMusic {
      * @throws Exception
      */
     public PNGMusic(AudioVisual map) throws Exception {
-        //initializeSequence();
-        imageAndMusicTools = new ImageAndMusicTools(map);
+        this.imageAndMusicTools = new ImageAndMusicTools(map);
         this.numtracks = 3;
     }
     
@@ -100,7 +98,7 @@ public class PNGMusic {
      * @throws Exception
      */
     private void initializeSequence() throws Exception {
-        sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
+        this.sequence = new Sequence(MIDISequenceTools.DIVISION_TYPE, MIDISequenceTools.TICKS_PER_BEAT);
         
         this.initializeTracks();
 
@@ -224,11 +222,10 @@ public class PNGMusic {
         Track[] allTracks = sequence.getTracks();
         Track[] kLongest = getKLongestTracks(allTracks, numtracks);
         
-        Dimension edge = generateDimension();
-        BufferedImage newImage = new BufferedImage(edge.width, edge.height, BufferedImage.TYPE_3BYTE_BGR);
-        int side = edge.width;
+        Dimension imageSize = generateDimension(sequence);
+        BufferedImage newImage = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_3BYTE_BGR);
         
-        System.err.println("INFO: Image side length = " + side);
+        System.err.println("INFO: Image size = " + imageSize.width + "x" + imageSize.height + " px");
         for(int i=0; i<sequence.getTracks().length; i++)
         	System.err.println("INFO: Track #" + i + " size = " + sequence.getTracks()[i].size());
         
@@ -238,8 +235,8 @@ public class PNGMusic {
         	needles[i] = new Needle(kLongest[i]);
 
         Note nextNote = new Note(Note.Length.QUARTER, Note.Dot.ZERO, 0);
-        for(int row=0; row<side; row++) {
-            for(int column=0; column<side; column++) {
+        for(int row=0; row<imageSize.height; row++) {
+            for(int column=0; column<imageSize.width; column++) {
             	for(int index=0; index<realnumtracks; index++) {
                     if(needles[index].hasNext())
                     	nextNote = needles[index].next();
@@ -275,11 +272,10 @@ public class PNGMusic {
      * size is assigned later on.
      * @return
      */
-    private Dimension generateDimension() {
+    private Dimension generateDimension(Sequence sequence) {
     	Dimension dimension = new Dimension();
-    	int height = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*42);
-    	int width = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*42);
-    	dimension.setSize(width, height);
+    	dimension.height = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*4);
+    	dimension.width = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*4);
     	return dimension;
     }
     
