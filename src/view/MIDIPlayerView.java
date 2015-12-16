@@ -138,11 +138,15 @@ public class MIDIPlayerView {
      */
     public void displayImage(BufferedImage image) {
         JFrame imageframe = new JFrame();
-        imageframe.setSize(new Dimension(image.getWidth(), image.getHeight()+30));
+        imageframe.setTitle("Image");
+        imageframe.setLayout(new BorderLayout());
         ImagePanel imgpanel = new ImagePanel(image);
-        imgpanel.setVisible(true);
-        imageframe.getContentPane().add(imgpanel);
+        imgpanel.setSize(new Dimension(image.getWidth(), image.getHeight()));
+        imageframe.getContentPane().add(imgpanel, BorderLayout.CENTER);
+        imageframe.setResizable(false);
+        imageframe.pack();
         imageframe.setLocationRelativeTo(applicationWindow);
+        imgpanel.setVisible(true);
         imageframe.setVisible(true);
     }
     
