@@ -21,6 +21,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import tools.phonograph.Needle;
 import audiovisual.AudioVisual;
 import music.Note;
 
@@ -226,33 +227,29 @@ public class PNGMusic {
         for(int i=0; i<sequence.getTracks().length; i++)
         	System.err.println("INFO: Track #" + i + " size = " + sequence.getTracks()[i].size());
         
-        //eventIndex[i] corresponds to the event index in track i.
-        int[] eventIndex = new int[numtracks];
-        for(int i=0; i<numtracks; i++)
-        	eventIndex[i] = 0;
+        int[] rgb = new int[numtracks];
+        Track[] allTracks = sequence.getTracks();
+        Track[] kLongest = getKLongestTracks(allTracks, numtracks);
+        
+        int realnumtracks = Math.min(numtracks, kLongest.length);
+        Needle[] needles = new Needle[realnumtracks];
+        for(int i=0; i<realnumtracks; i++)
+        	needles[i] = new Needle(kLongest[i]);
         
         for(int row=0; row<side; row++) {
             for(int column=0; column<side; column++) {
-                int[] rgb = {-1, -1, -1};
-                Note[] notes = new Note[numtracks];
-                Track[] allTracks = sequence.getTracks();
-                Track[] kLongest = getKLongestTracks(allTracks, numtracks);
-
-            	int size = Math.min(3, kLongest.length);
-            	for(int index=0; index<size; index++) {
-                    while((MIDISequenceTools.getMessageType(kLongest[index], eventIndex[index]) & 0xFF) != ShortMessage.NOTE_ON) {
-                    	eventIndex[index] = (eventIndex[index] + 1) % (kLongest[index].size()-1);
-                    }
-                    
-            		notes[index] = MIDISequenceTools.getNoteFromTrack(kLongest[index], eventIndex[index]);
-            		
-            		if(notes[index].getPitch() < 21 || notes[index].getPitch() > 108) {
-            			int pitch = Math.abs(21 - notes[index].getPitch()) < Math.abs(108 - notes[index].getPitch()) ? 21 : 108;
-            			Note newNote = new Note(notes[index].getLength(), notes[index].getDot(), pitch);
-            			notes[index] = newNote;
+            	for(int index=0; index<realnumtracks; index++) {
+                    Note nextNote;
+                    if(needles[index].hasNext())
+                    	nextNote = needles[index].next();
+                    else
+                    	continue;
+                		
+            		if(nextNote.getPitch() < 21 || nextNote.getPitch() > 108) {
+            			int pitch = Math.abs(21 - nextNote.getPitch()) < Math.abs(108 - nextNote.getPitch()) ? 21 : 108;
+            			nextNote = new Note(nextNote.getLength(), nextNote.getDot(), pitch);
             		}
-            		rgb[index] = imageAndMusicTools.pitchToColor(notes[index]);
-            		eventIndex[index] = (eventIndex[index] + 1) % (kLongest[index].size()-1);
+            		rgb[index] = imageAndMusicTools.pitchToColor(nextNote);
             	}
             	
             	/**
@@ -272,6 +269,17 @@ public class PNGMusic {
         newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         newImage.getGraphics().drawImage(image, 0, 0 , null);
         return newImage;
+    }
+    
+    /**
+     * Returns
+     * @param track
+     * @param currTick
+     * @param eventIndex
+     * @return
+     */
+    private Note getNextNote(Track track, long currTick, int eventIndex) {
+    	return null;
     }
     
     /**
