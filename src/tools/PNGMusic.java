@@ -24,6 +24,7 @@ import tools.phonograph.Needle;
 import audiovisual.AudioVisual;
 import music.Note;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -222,9 +223,10 @@ public class PNGMusic {
         int[] rgb = new int[numtracks];
         Track[] allTracks = sequence.getTracks();
         Track[] kLongest = getKLongestTracks(allTracks, numtracks);
-        int side = (int) Math.sqrt(kLongest[0].size());
-        //int side = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*42);
-        BufferedImage newImage = new BufferedImage(side, side, BufferedImage.TYPE_3BYTE_BGR);
+        
+        Dimension edge = generateDimension();
+        BufferedImage newImage = new BufferedImage(edge.width, edge.height, BufferedImage.TYPE_3BYTE_BGR);
+        int side = edge.width;
         
         System.err.println("INFO: Image side length = " + side);
         for(int i=0; i<sequence.getTracks().length; i++)
@@ -266,6 +268,19 @@ public class PNGMusic {
         newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
         newImage.getGraphics().drawImage(image, 0, 0 , null);
         return newImage;
+    }
+    
+    /**
+     * A private helper method to generate image size. This should make it easier to change how
+     * size is assigned later on.
+     * @return
+     */
+    private Dimension generateDimension() {
+    	Dimension dimension = new Dimension();
+    	int height = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*42);
+    	int width = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*42);
+    	dimension.setSize(width, height);
+    	return dimension;
     }
     
     /**

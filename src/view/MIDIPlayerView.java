@@ -35,6 +35,7 @@ public class MIDIPlayerView {
      */
     public MIDIPlayerView() {
         applicationWindow.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        applicationWindow.setResizable(false);
         applicationWindow.setIconImage(Toolkit.getDefaultToolkit().getImage("ViewImages/music_icon.png"));
         setUpMenuBar();
         setUpPlayerPanel();

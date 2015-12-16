@@ -153,6 +153,7 @@ public class MIDIPlayerController {
                 	//Generally this means the sequencer is closed, so try play() instead.
                     try {
                         model.play();
+                        view.setStatusFieldText("Playing");
                     }
                     catch(Exception exception2) {
                         view.displayMessageBox(exception2.toString(), JOptionPane.ERROR_MESSAGE);
