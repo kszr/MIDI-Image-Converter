@@ -21,8 +21,8 @@ public class Needle implements Iterator<Note> {
 	
 	public Needle(Track track) {
 		this.track = track;
-		this.eventIndex = 0;
-		this.nextIndex = -1;
+		this.eventIndex = -1;
+		this.nextIndex = -2;
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class Needle implements Iterator<Note> {
 		try {
 			while((MIDISequenceTools.getMessageType(this.track, newEventIndex) & 0xFF) != ShortMessage.NOTE_ON)
 				newEventIndex++;
-			nextIndex = newEventIndex;
+			this.nextIndex = newEventIndex;
 			return true;
 		} catch(ArrayIndexOutOfBoundsException exception) {
 			return false;

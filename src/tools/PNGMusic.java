@@ -190,7 +190,7 @@ public class PNGMusic {
         }
 
         //Use the length of the longest track in ticks to set the end of the sequence.
-        long endtick = getMax(ticks);
+        long endtick = maxArrayElement(ticks);
         for(Track track : tracks) {
             MIDISequenceTools.setEndOfTrack(track, endtick + 19);
         }
@@ -202,7 +202,7 @@ public class PNGMusic {
      * @param array
      * @return
      */
-    private static long getMax(long[] array) {
+    private static long maxArrayElement(long[] array) {
     	long max = Long.MIN_VALUE;
     	for(int i=0; i<array.length; i++)
     		if(array[i] > max)
@@ -223,7 +223,7 @@ public class PNGMusic {
         Track[] kLongest = getKLongestTracks(allTracks, numtracks);
         
         Dimension imageSize = generateDimension(sequence);
-        BufferedImage image = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage newImage = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_3BYTE_BGR);
         
         System.err.println("INFO: Image size = " + imageSize.width + "x" + imageSize.height + " px");
         for(int i=0; i<sequence.getTracks().length; i++)
@@ -258,13 +258,14 @@ public class PNGMusic {
             	}
             	
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-                image.setRGB(column, row, color);
+                newImage.setRGB(column, row, color);
             }
         }
-        image = (BufferedImage) image.getScaledInstance(DISPLAY_SIZE, DISPLAY_SIZE, Image.SCALE_SMOOTH);
-        image = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
-        image.getGraphics().drawImage(image, 0, 0 , null);
-        return image;
+        Image image = newImage;
+        image = image.getScaledInstance(DISPLAY_SIZE, DISPLAY_SIZE, Image.SCALE_SMOOTH);
+        newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
+        newImage.getGraphics().drawImage(image, 0, 0 , null);
+        return newImage;
     }
     
     /**
@@ -274,9 +275,37 @@ public class PNGMusic {
      */
     private Dimension generateDimension(Sequence sequence) {
     	Dimension dimension = new Dimension();
-    	dimension.height = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*4);
-    	dimension.width = (int) Math.sqrt(sequence.getTickLength()/sequence.getResolution()*4);
+    	Track[] tracks = sequence.getTracks();
+    	dimension.height = dimension.width = (int) Math.sqrt(maxTrackLength(tracks));
     	return dimension;
+    }
+    
+    /**
+     * Returns the length (in notes) of the longest track in an array
+     * of tracks.
+     * @param tracks
+     * @return
+     */
+    private int maxTrackLength(Track[] tracks) {
+    	long[] tracklengths = new long[tracks.length];
+    	for(int i=0; i<tracks.length; i++)
+    		tracklengths[i] = numNotes(tracks[i]);
+    	return (int) maxArrayElement(tracklengths);
+    }
+    
+    /**
+     * Returns the number of notes in a track.
+     * @param track
+     * @return
+     */
+    private int numNotes(Track track) {
+    	Needle needle = new Needle(track);
+    	int num = 0;
+    	while(needle.hasNext()) {
+    		needle.next();
+    		num++;
+    	}
+    	return num;
     }
     
     /**

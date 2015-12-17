@@ -13,9 +13,9 @@ import controller.MIDIPlayerController;
  * To change this template use File | Settings | File Templates.
  */
 public class Application {
-    public static void main(String[] args) throws Exception {
-        MIDIPlayerView view = new MIDIPlayerView();
+	public static void main(String[] args) throws Exception {
+		MIDIPlayerView view = new MIDIPlayerView();
         MIDIPlayer player = new MIDIPlayer(new DotAudioVisual());
-		MIDIPlayerController controller = new MIDIPlayerController(view, player);
+        MIDIPlayerController controller = new MIDIPlayerController(view, player);
     }
 }
