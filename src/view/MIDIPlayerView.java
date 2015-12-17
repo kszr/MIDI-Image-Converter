@@ -1,14 +1,5 @@
 package view;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Administrator
- * Date: 11/9/13
- * Time: 2:20 PM
- * To change this template use File | Settings | File Templates.
- */
-
-import view.panels.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +8,11 @@ import java.io.File;
 
 import javax.swing.*;
 
+import view.frame.ApplicationFrame;
+import view.frame.ImageFrame;
+import view.panel.*;
+
 public class MIDIPlayerView {
-    private final JFrame applicationWindow = new JFrame("Midi Player");
     private final PlayerPanel playerPanel = new PlayerPanel();
     private final RecordingPanel recordingPanel = new RecordingPanel();
     
@@ -29,19 +23,15 @@ public class MIDIPlayerView {
     public static final int FRAME_HEIGHT = 250;
     
     private String instrument = null;
+    private final ApplicationFrame applicationWindow = new ApplicationFrame(FRAME_WIDTH, FRAME_HEIGHT);
 
     /**
      * Instantiates the JFrame with buttons and other objects.
      */
     public MIDIPlayerView() {
-        applicationWindow.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        applicationWindow.setResizable(false);
-        applicationWindow.setIconImage(Toolkit.getDefaultToolkit().getImage("ViewImages/music_icon.png"));
         setUpMenuBar();
         setUpPlayerPanel();
         setUpRecordingPanel();
-        applicationWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        applicationWindow.setLocationRelativeTo(null);
         applicationWindow.setVisible(true);
     }
 
@@ -138,16 +128,8 @@ public class MIDIPlayerView {
      * @param image
      */
     public void displayImage(Image image) {
-        JFrame imageframe = new JFrame();
-        imageframe.setTitle("Image");
-        imageframe.setLayout(new BorderLayout());
-        ImagePanel imgpanel = new ImagePanel(image);
-        imgpanel.setSize(new Dimension(((BufferedImage) image).getWidth(), ((BufferedImage) image).getHeight()));
-        imageframe.getContentPane().add(imgpanel, BorderLayout.CENTER);
-        imageframe.setResizable(false);
-        imageframe.pack();
+        ImageFrame imageframe = new ImageFrame(image);
         imageframe.setLocationRelativeTo(applicationWindow);
-        imgpanel.setVisible(true);
         imageframe.setVisible(true);
     }
     

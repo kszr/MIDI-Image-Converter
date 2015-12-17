@@ -70,17 +70,25 @@ public class ImageAndMusicTools {
      * @return
      */
     public static boolean isValidMidiFilename(String filename) {
-        return filename.length()>4 && filename.substring(filename.length()-4).equalsIgnoreCase(".mid");
+    	String extn = getExtension(filename);
+        return (extn != null) && extn.equals("mid");
     }
 
     /**
-     * Returns true if the filename belongs to a PNG file (i.e., with extension ".png").
+     * Returns true if the filename belongs to an image file, which can have the following extensions:
+     * - png
+     * - jpg
+     * - jpeg
+     * - gif
      * @param filename
      * @return
      */
 	public static boolean isValidImageFilename(String filename) {
-		return filename.length()>4 && (filename.substring(filename.length()-4).equalsIgnoreCase(".png") ||
-				filename.substring(filename.length()-4).equalsIgnoreCase(".jpg"));
+		String extn = getExtension(filename);
+		return (extn != null) && (extn.equals("png") ||
+								  extn.equals("jpg") ||
+								  extn.equals("jpeg")||
+								  extn.equals("gif"));
 	}
 	
 	public static boolean isValidImageFile(File file) {
@@ -90,4 +98,29 @@ public class ImageAndMusicTools {
 	public static boolean isValidMidiFile(File file) {
 		return file.exists() && isValidMidiFilename(file.getName());
 	}
+	
+    
+    /**
+     * Gets the extension from a filename.
+     * @param filename
+     * @return
+     */
+    public static String getExtension(String filename) {
+        String ext = null;
+        int i = filename.lastIndexOf('.');
+
+        if (i > 0 &&  i < filename.length() - 1) {
+            ext = filename.substring(i+1).toLowerCase();
+        }
+        return ext;
+    }
+    
+    /**
+     * Gets the extension from a file.
+     * @param file
+     * @return
+     */
+    public static String getExtension(File file) {
+    	return file != null ? getExtension(file.getName()) : null;
+    }
 }

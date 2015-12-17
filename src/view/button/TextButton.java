@@ -1,4 +1,4 @@
-package view.buttons;
+package view.button;
 
 import java.awt.Dimension;
 

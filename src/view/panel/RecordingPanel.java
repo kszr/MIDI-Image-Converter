@@ -1,7 +1,4 @@
-package view.panels;
-
-import view.buttons.PlaybackButton;
-import view.buttons.TextButton;
+package view.panel;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -11,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import view.MIDIPlayerView;
+import view.button.PlaybackButton;
+import view.button.TextButton;
 
 
 

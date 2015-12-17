@@ -145,8 +145,8 @@ public class MIDIPlayer {
      * @return
      */
     private static String generateConflictFilename(String filename, int copy) {
-    	String extn = filename.substring(filename.length()-4);
-    	String restOfName = filename.substring(0, filename.length()-4);
+    	String extn = ImageAndMusicTools.getExtension(filename);
+    	String restOfName = filename.substring(0, filename.lastIndexOf(extn));
     	restOfName += " (" + copy + ")";
     	return restOfName + extn;
     }
