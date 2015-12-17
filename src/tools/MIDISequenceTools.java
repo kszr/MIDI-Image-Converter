@@ -36,6 +36,13 @@ public class MIDISequenceTools {
     public static final int SYSEX_REAL_TIME=0x7E;
     public static final int SYSEX_NON_REAL_TIME=0x7F;
     public static final int SYSEX_END=0xF7;
+    
+    /**
+     * This class is not instantiable.
+     */
+    private MIDISequenceTools() {
+    	
+    }
 
     /**
      * Prepares the system to receive MIDI data.

@@ -22,6 +22,7 @@ import javax.sound.midi.Track;
 
 import tools.phonograph.Needle;
 import audiovisual.AudioVisual;
+import audiovisual.SimpleAudioVisual;
 import music.Note;
 
 import java.awt.Dimension;
@@ -50,7 +51,7 @@ public class PNGMusic {
     private Track[] tracks;
     private int numtracks;
     
-    private ImageAndMusicTools imageAndMusicTools;
+    private AudioVisual audioVisual = new SimpleAudioVisual();
 
     /**
      * Instantiates the Player.PNGMusic object by creating three tracks,
@@ -61,7 +62,6 @@ public class PNGMusic {
      * @throws Exception
      */
     public PNGMusic() throws Exception {
-        this.imageAndMusicTools = new ImageAndMusicTools();
         this.numtracks = 3;
     }
     
@@ -71,7 +71,7 @@ public class PNGMusic {
      * @throws Exception
      */
     public PNGMusic(AudioVisual map) throws Exception {
-        this.imageAndMusicTools = new ImageAndMusicTools(map);
+        audioVisual = map;
         this.numtracks = 3;
     }
     
@@ -174,7 +174,7 @@ public class PNGMusic {
                 int[] argb = ImageAndMusicTools.getARGB(color);
                 Note[] notes = new Note[numtracks];
                 for(int i=0; i<tracks.length; i++)
-                	notes[i] = imageAndMusicTools.colorToNote(argb[i+1]);
+                	notes[i] = audioVisual.getNote(argb[i+1]);
 
                 /**
                  * Turn the note at notes[index] on in tracks[index] at the specified tick,
@@ -246,7 +246,7 @@ public class PNGMusic {
             			int pitch = Math.abs(21 - nextNote.getPitch()) < Math.abs(108 - nextNote.getPitch()) ? 21 : 108;
             			nextNote = new Note(nextNote.getLength(), nextNote.getDot(), pitch);
             		}
-            		rgb[index] = imageAndMusicTools.pitchToColor(nextNote);
+            		rgb[index] = audioVisual.getColor(nextNote);
             	}
             	
             	/**
