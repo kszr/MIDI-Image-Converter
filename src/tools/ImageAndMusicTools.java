@@ -2,10 +2,6 @@ package tools;
 
 import java.io.File;
 
-import audiovisual.AudioVisual;
-import audiovisual.SimpleAudioVisual;
-import music.Note;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -97,6 +93,22 @@ public class ImageAndMusicTools {
      */
     public static String getExtension(File file) {
     	return file != null ? getExtension(file.getName()) : null;
+    }
+    
+    
+    /**
+     * Appends a version number to a filename, in case multiple files
+     * with the same root name exist. This is probably gratuitous, but it's better than
+     * throwing exceptions when there are conflicts.
+     * @param filename
+     * @param copy
+     * @return
+     */
+    public static String generateConflictFilename(String filename, int copy) {
+    	String extn = ImageAndMusicTools.getExtension(filename);
+    	String restOfName = filename.substring(0, filename.lastIndexOf("." + extn));
+    	restOfName += " (" + copy + ")";
+    	return restOfName + "." + extn;
     }
     
 }

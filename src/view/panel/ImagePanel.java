@@ -31,4 +31,8 @@ public class ImagePanel extends JPanel {
     public void paintComponent(Graphics g) {
         g.drawImage(img, 0, 0, null);
     }
+    
+    public Image getImage() {
+    	return img;
+    }
 }

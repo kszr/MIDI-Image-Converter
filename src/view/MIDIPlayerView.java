@@ -1,29 +1,27 @@
 package view;
 
-import java.awt.*;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 import view.frame.ApplicationFrame;
 import view.frame.ImageFrame;
-import view.panel.*;
+import view.panel.PlayerPanel;
+import view.panel.RecordingPanel;
 
 public class MIDIPlayerView {
     private final PlayerPanel playerPanel = new PlayerPanel();
     private final RecordingPanel recordingPanel = new RecordingPanel();
-    
-    private JMenuItem openMenuItem;
-    private JMenuItem saveMenuItem;
     
     public static final int FRAME_WIDTH = 400;
     public static final int FRAME_HEIGHT = 250;
     
     private String instrument = null;
     private final ApplicationFrame applicationWindow = new ApplicationFrame(FRAME_WIDTH, FRAME_HEIGHT);
+    private ImageFrame imageFrame = null;
 
     /**
      * Instantiates the JFrame with buttons and other objects.
@@ -57,66 +55,10 @@ public class MIDIPlayerView {
      * main player and the user recorded music part of the application.
      */
     public void setUpMenuBar() {
-        JMenuBar menubar = new JMenuBar();
-        JMenu switchView = new JMenu("View");
-
-        JMenuItem musicPlayer = new JMenuItem("Music Player");
-        musicPlayer.addActionListener(new ActionListener() {
-            /**
-             * Switches to the player panel.
-             * @param e
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                recordingPanel.setVisible(false);
-                playerPanel.setVisible(true);
-                applicationWindow.getContentPane().remove(recordingPanel);
-                applicationWindow.getContentPane().add(playerPanel);
-            }
-        });
-
-        JMenuItem recordMusic = new JMenuItem("Record Music");
-        recordMusic.addActionListener(new ActionListener() {
-            /**
-             * Switches to the recording panel.
-             * @param e
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                playerPanel.setVisible(false);
-                recordingPanel.setVisible(true);
-                applicationWindow.getContentPane().remove(playerPanel);
-                applicationWindow.getContentPane().add(recordingPanel);
-            }
-        });
-
-        switchView.add(musicPlayer);
-        switchView.add(recordMusic);
-
-        JMenu filemenu = new JMenu("File");
-        
-        openMenuItem = new JMenuItem("Open");
-        filemenu.add(openMenuItem);
-        
-        saveMenuItem = new JMenuItem("Save As");
-        filemenu.add(saveMenuItem);
-        
-        JMenuItem quit = new JMenuItem("Quit");
-        quit.addActionListener(new ActionListener() {
-            /**
-             * Quits the program.
-             * @param e
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        filemenu.add(quit);
-
-        menubar.add(filemenu);
-        menubar.add(switchView);
-        applicationWindow.setJMenuBar(menubar);
+    	this.applicationWindow.setUpMenuBar();
+    	this.addPlayerActionListener();
+    	this.addRecordActionListener();
+    	this.addQuitActionListener();
     }
 
     public void displayMessageBox(String displayText, int type) {
@@ -128,9 +70,10 @@ public class MIDIPlayerView {
      * @param image
      */
     public void displayImage(Image image) {
-        ImageFrame imageframe = new ImageFrame(image);
-        imageframe.setLocationRelativeTo(applicationWindow);
-        imageframe.setVisible(true);
+        imageFrame = new ImageFrame(image);
+        imageFrame.addSaveActionListener();
+        imageFrame.setLocationRelativeTo(applicationWindow);
+        imageFrame.setVisible(true);
     }
     
     /**
@@ -194,20 +137,20 @@ public class MIDIPlayerView {
 
     /**
      * Adds an ActionListener to playerPanel's open button.
-     * @param openAction
+     * @param openActionListener
      */
-    public void addFileOpenListener(ActionListener openAction) {
-        playerPanel.addOpenActionListener(openAction);
-        openMenuItem.addActionListener(openAction);
+    public void addFileOpenListener(ActionListener openActionListener) {
+        playerPanel.addOpenActionListener(openActionListener);
+        applicationWindow.addOpenActionListener(openActionListener);
     }
 
     /**
      * Adds an ActionListener to playerPanel's save button.
-     * @param saveAction
+     * @param saveActionListener
      */
-    public void addPlayerFileSaveListener(ActionListener saveAction) {
-        playerPanel.addSaveActionListener(saveAction);
-        saveMenuItem.addActionListener(saveAction);
+    public void addPlayerFileSaveListener(ActionListener saveActionListener) {
+        playerPanel.addSaveActionListener(saveActionListener);
+        applicationWindow.addSaveActionListener(saveActionListener);
     }
 
     /**
@@ -220,49 +163,102 @@ public class MIDIPlayerView {
 
     /**
      * Adds an ActionListener to playerPanel's play button.
-     * @param playAction
+     * @param playActionListener
      */
-    public void addPlayerPlayListener(ActionListener playAction) {
-        playerPanel.addPlayActionListener(playAction);
+    public void addPlayerPlayListener(ActionListener playActionListener) {
+        playerPanel.addPlayActionListener(playActionListener);
     }
 
     /**
      * Adds an ActionListener to playerPanel's pause button.
-     * @param pauseAction
+     * @param pauseActionListener
      */
-    public void addPlayerPauseListener(ActionListener pauseAction) {
-        playerPanel.addPauseActionListener(pauseAction);
+    public void addPlayerPauseListener(ActionListener pauseActionListener) {
+        playerPanel.addPauseActionListener(pauseActionListener);
     }
 
     /**
      * Adds an ActionListener to playerPanel's stop button.
-     * @param stopAction
+     * @param stopActionListener
      */
-    public void addPlayerStopListener(ActionListener stopAction) {
-        playerPanel.addStopActionListener(stopAction);
+    public void addPlayerStopListener(ActionListener stopActionListener) {
+        playerPanel.addStopActionListener(stopActionListener);
     }
 
     /**
      * Adds an ActionListener to playerPanel's stop button.
-     * @param backAction
+     * @param backActionListener
      */
-    public void addPlayerBackListener(ActionListener backAction) {
-        playerPanel.addBackActionListener(backAction);
+    public void addPlayerBackListener(ActionListener backActionListener) {
+        playerPanel.addBackActionListener(backActionListener);
     }
 
     /**
      * Adds an ActionListener to playerPanel's stop button.
-     * @param forwardAction
+     * @param forwardActionListener
      */
-    public void addPlayerForwardListener(ActionListener forwardAction) {
-        playerPanel.addForwardActionListener(forwardAction);
+    public void addPlayerForwardListener(ActionListener forwardActionListener) {
+        playerPanel.addForwardActionListener(forwardActionListener);
     }
     
     /**
      * Adds an ActionListener to playerPanel's "change instrument" button.
-     * @param instrumentAction
+     * @param instrumentActionListener
      */
-    public void addInstrumentListener(ActionListener instrumentAction) {
-    	playerPanel.addInstrumentActionListener(instrumentAction);
+    public void addInstrumentListener(ActionListener instrumentActionListener) {
+    	playerPanel.addInstrumentActionListener(instrumentActionListener);
     }
+    
+    /**
+     * Adds an ActionListener to View > Music Player in the menu bar.
+     */
+    private void addPlayerActionListener() {
+    	this.applicationWindow.addPlayerActionListener(new ActionListener() {
+            /**
+             * Switches to the player panel.
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                recordingPanel.setVisible(false);
+                playerPanel.setVisible(true);
+                applicationWindow.getContentPane().remove(recordingPanel);
+                applicationWindow.getContentPane().add(playerPanel);
+            }
+        });
+    }
+    
+    /**
+     * Adds an ActionListener to View > Record Music in the menu bar.
+     */
+    private void addRecordActionListener() {
+    	this.applicationWindow.addRecordActionListener(new ActionListener() {
+            /**
+             * Switches to the recording panel.
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                playerPanel.setVisible(false);
+                recordingPanel.setVisible(true);
+                applicationWindow.getContentPane().remove(playerPanel);
+                applicationWindow.getContentPane().add(recordingPanel);
+            }
+        });
+    }
+    
+    /**
+     * Adds an ActionListener to File > Quit in the menu bar.
+     */
+    private void addQuitActionListener() {
+    	this.applicationWindow.addQuitActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+    		
+    	});
+    }
+
 }

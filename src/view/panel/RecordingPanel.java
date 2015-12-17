@@ -11,8 +11,6 @@ import view.MIDIPlayerView;
 import view.button.PlaybackButton;
 import view.button.TextButton;
 
-
-
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator

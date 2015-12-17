@@ -21,10 +21,7 @@ import tools.MIDISequenceTools;
 import tools.PNGMusic;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class MIDIPlayer {
     private final Sequencer sequencer = MidiSystem.getSequencer();
@@ -130,25 +127,10 @@ public class MIDIPlayer {
 
         int copy = 2;
         while(file.exists()) {
-            file = new File(generateConflictFilename(name, copy++));
+            file = new File(ImageAndMusicTools.generateConflictFilename(name, copy++));
         }
 
         MidiSystem.write(currSequence, 1, file);
-    }
-    
-    /**
-     * Appends a version number to a filename, in case multiple files
-     * with the same root name exist. This is probably gratuitous, but it's better than
-     * throwing exceptions when there are conflicts.
-     * @param filename
-     * @param copy
-     * @return
-     */
-    private static String generateConflictFilename(String filename, int copy) {
-    	String extn = ImageAndMusicTools.getExtension(filename);
-    	String restOfName = filename.substring(0, filename.lastIndexOf(extn));
-    	restOfName += " (" + copy + ")";
-    	return restOfName + extn;
     }
 
     /**

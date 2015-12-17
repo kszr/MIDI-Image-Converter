@@ -1,7 +1,8 @@
 package view.panel;
 
 import view.MIDIPlayerView;
-import view.button.*;
+import view.button.PlaybackButton;
+import view.button.TextButton;
 import view.filefilter.MidiOrImageFilter;
 
 import java.awt.Dimension;
@@ -15,7 +16,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileFilter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -68,19 +68,9 @@ public class PlayerPanel extends JPanel {
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new FlowLayout());
         textFieldPanel.setSize(new Dimension(500, 70));
-        //createTextField(textFieldPanel);
         setUpTextFieldButtons(textFieldPanel);
         textFieldPanel.setVisible(true);
         add(textFieldPanel);
-    }
-
-    /**
-     * ACtually creates the text field.
-     * @param textFieldPanel
-     */
-    private void createTextField(JPanel textFieldPanel) {
-        filename_field = new JTextField(10);
-        textFieldPanel.add(filename_field);
     }
 
     /**
