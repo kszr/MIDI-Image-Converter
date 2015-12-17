@@ -85,14 +85,10 @@ public class ImageFrame extends JFrame {
 		});
 	}
 	
-	public void openSaveFileChooser() {
-        fileChooser.addChoosableFileFilter(new ImageFileFilter());
-    	fileChooser.setAcceptAllFileFilterUsed(false);
-    	fileChooser.showSaveDialog(this);
-	}
-	
-	public File getSelectedFile() {
-		return fileChooser.getSelectedFile();
+	private void openSaveFileChooser() {
+		fileChooser.addChoosableFileFilter(new ImageFileFilter());
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.showSaveDialog(this);
 	}
 	
 }
