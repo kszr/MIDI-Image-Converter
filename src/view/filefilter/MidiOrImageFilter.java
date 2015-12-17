@@ -1,4 +1,4 @@
-package view.filecfilter;
+package view.filefilter;
 
 import java.io.File;
 

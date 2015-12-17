@@ -2,7 +2,7 @@ package view.panel;
 
 import view.MIDIPlayerView;
 import view.button.*;
-import view.filecfilter.MidiOrImageFilter;
+import view.filefilter.MidiOrImageFilter;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
