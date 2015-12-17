@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -124,7 +125,7 @@ public class MIDIPlayerController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    BufferedImage image = model.convertSequenceToPNG();
+                    Image image = model.convertSequenceToPNG();
                     view.setStatusFieldText("Converting to image...");
                     view.displayImage(image);
                     view.setStatusFieldText("Converted to image");

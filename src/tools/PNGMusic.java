@@ -216,14 +216,14 @@ public class PNGMusic {
      * @throws Exception
      * @TODO	Need to better deal with uncertainties in note lengths and track counts.
      */
-    public BufferedImage midiToImage(Sequence sequence) throws Exception {
+    public Image midiToImage(Sequence sequence) throws Exception {
     	initializeSequence();
         int[] rgb = new int[numtracks];
         Track[] allTracks = sequence.getTracks();
         Track[] kLongest = getKLongestTracks(allTracks, numtracks);
         
         Dimension imageSize = generateDimension(sequence);
-        BufferedImage newImage = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_3BYTE_BGR);
         
         System.err.println("INFO: Image size = " + imageSize.width + "x" + imageSize.height + " px");
         for(int i=0; i<sequence.getTracks().length; i++)
@@ -240,6 +240,7 @@ public class PNGMusic {
             	for(int index=0; index<realnumtracks; index++) {
                     if(needles[index].hasNext())
                     	nextNote = needles[index].next();
+                    else nextNote = new Note(Note.Length.QUARTER, Note.Dot.ZERO, 21);
                 		
             		if(nextNote.getPitch() < 21 || nextNote.getPitch() > 108) {
             			int pitch = Math.abs(21 - nextNote.getPitch()) < Math.abs(108 - nextNote.getPitch()) ? 21 : 108;
@@ -257,14 +258,13 @@ public class PNGMusic {
             	}
             	
                 int color = (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
-                newImage.setRGB(column, row, color);
+                image.setRGB(column, row, color);
             }
         }
-        Image image = newImage;
-        image = image.getScaledInstance(DISPLAY_SIZE, DISPLAY_SIZE, Image.SCALE_SMOOTH);
-        newImage = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
-        newImage.getGraphics().drawImage(image, 0, 0 , null);
-        return newImage;
+        image = (BufferedImage) image.getScaledInstance(DISPLAY_SIZE, DISPLAY_SIZE, Image.SCALE_SMOOTH);
+        image = new BufferedImage(DISPLAY_SIZE, DISPLAY_SIZE, BufferedImage.TYPE_3BYTE_BGR);
+        image.getGraphics().drawImage(image, 0, 0 , null);
+        return image;
     }
     
     /**

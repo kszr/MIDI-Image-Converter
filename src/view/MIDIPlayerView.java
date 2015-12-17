@@ -137,12 +137,12 @@ public class MIDIPlayerView {
      * Opens a new window displaying the result of the midi to image conversion.
      * @param image
      */
-    public void displayImage(BufferedImage image) {
+    public void displayImage(Image image) {
         JFrame imageframe = new JFrame();
         imageframe.setTitle("Image");
         imageframe.setLayout(new BorderLayout());
         ImagePanel imgpanel = new ImagePanel(image);
-        imgpanel.setSize(new Dimension(image.getWidth(), image.getHeight()));
+        imgpanel.setSize(new Dimension(((BufferedImage) image).getWidth(), ((BufferedImage) image).getHeight()));
         imageframe.getContentPane().add(imgpanel, BorderLayout.CENTER);
         imageframe.setResizable(false);
         imageframe.pack();

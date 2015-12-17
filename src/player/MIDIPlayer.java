@@ -20,6 +20,7 @@ import tools.InstrumentBank;
 import tools.MIDISequenceTools;
 import tools.PNGMusic;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,11 +73,11 @@ public class MIDIPlayer {
      * @return 			The image.
      * @throws Exception
      */
-    public BufferedImage convertSequenceToPNG() throws Exception {
+    public Image convertSequenceToPNG() throws Exception {
     	if(currSequence == null)
     		throw new NullPointerException("No music to convert!");
     	
-        BufferedImage image = pngmusic.midiToImage(currSequence);
+        Image image = pngmusic.midiToImage(currSequence);
         return image;
     }
     
