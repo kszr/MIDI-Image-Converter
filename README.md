@@ -6,20 +6,16 @@ The project is built on the model-view-controller pattern, and uses Swing for th
 
 Expansions of various kinds are currently underway.
 
-##What it does (or claims to do)
+##Running the application
+The main method is located in ```src/application/Application.java```.
 
-One of the (ambitious) claims this project makes is to load image (png, jpeg) files and convert them to music (midi), and vice versa.
+##Current status
+MIDI to Image and Image to MIDI conversion have both been implemented. Some comments below.
 
-##How well it does what it's supposed to do
+###Image to MIDI conversion
+This was relatively easy to do, because it's easy to specify in advance that you want a certain number of tracks of a certain length.
 
-Reasonably well, in my opinion, but for a smaller input set than is desirable. In particular, converting midis to images has proven a bit more onerous than anyone would like, owing to the sheer uncertainty in what you can expect from a midi file (number of tracks, number of extraneous tracks, etc.). At present this functionality is limited to files with three tracks, each of which is composed solely of semiquavers/sixteenth notes. (I forgot to check whether it accepts rests...)
+###MIDI to Image conversion
+This was harder, because it is difficult to predict what you will get in a MIDI file as far as number of tracks and their contents are concerned. The present implementation picks the three longest tracks, and uses them independently to set R, G, and B values in the resulting image value according to a certain mapping function.
 
-On the other hand, converting images to midi seems to work just fine, if only because it's easy to specify in advance that you want a certain number of tracks in your midi file. The conversion itself is not particularly sophisticated at present, but it shouldn't be too difficult to solicit the help of people with more imagination than I have.
-
-At present I'm working on refactoring the project a bit to make it more amenable to the expansions that I have in mind, which include:
-* Overcoming the abovementioned limitations of midi files.
-* Generating more sophisticated and/or interesting music from images (e.g., using other aspects of the image than just R, G, B values to create music).
-* Possibly extending the list of acceptable file formats (e.g., exporting midi as mp3, etc.).
-* Giving the user more flexibility in terms of modifying midi files (changing instruments, key, speed, etc.).
-
-In addition to all this, I have found myself pondering deeply the profound philosophical question of why anyone would find a project like this remotely useful. As a novelty, perhaps; but that wears off in... five minutes, last I checked. Would it be more interesting to make a simple music player that generated interesting (if trippy) visualizations as the music played?
+Classes that define color-note and note-color mappings are implementations of an interface that has been provided, and it possible (with a little imagination, I suppose) to come up with arbitrarily complex mappings of this sort. Whether the resulting music and/or images are aesthetically pleasing is a different matter altogether. It might be desirable to implement symmetric mappings, so that an image that is converted to music which is then converted back into an image yields the same image as the original, but this is not mandatory.
