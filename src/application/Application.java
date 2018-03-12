@@ -16,6 +16,6 @@ public class Application {
 	public static void main(String[] args) throws Exception {
 		MIDIPlayerView view = new MIDIPlayerView();
         MIDIPlayer player = new MIDIPlayer(new DotAudioVisual());
-        MIDIPlayerController controller = new MIDIPlayerController(view, player);
+        new MIDIPlayerController(view, player);
     }
 }
